@@ -9,7 +9,7 @@ public class ResultUtils {
      *
      * @return
      */
-    public static ResultVo succcess() {
+    public static ResultVo success() {
         return Vo(null, StatusCode.SUCCESS_CODE, null);
     }
 
@@ -28,8 +28,7 @@ public class ResultUtils {
         return Vo(msg, StatusCode.SUCCESS_CODE, data);
     }
 
-    public static ResultVo success(String msg, int code, Object
-            data) {
+    public static ResultVo success(String msg, int code, Object data) {
         return Vo(msg, code, data);
     }
 

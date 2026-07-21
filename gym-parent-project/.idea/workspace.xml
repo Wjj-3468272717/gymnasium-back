@@ -4,21 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="48ee24d5-9495-4356-8f9f-8fe758ea0ca5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../.idea/gymnasium-back.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/MarsCodeWorkspaceAppSettings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gym-common/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gym-service-web/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/META-INF/maven/archetype.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/archetype-resources/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/archetype-resources/src/main/java/App.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/archetype-resources/src/test/java/AppTest.java" afterDir="false" />
+    <list default="true" id="48ee24d5-9495-4356-8f9f-8fe758ea0ca5" name="Changes" comment="初始化项目结构">
+      <change beforePath="$PROJECT_DIR$/.idea/MarsCodeWorkspaceAppSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/MarsCodeWorkspaceAppSettings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym-common/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gym-common/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym-common/src/main/java/com/v1/utils/ResultUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym-common/src/main/java/com/v1/utils/ResultUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym-service-web/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gym-service-web/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym-service-web/src/main/java/com/v1/GYMServiceWebApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym-service-web/src/main/java/com/v1/GYMServiceWebApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym-service-web/src/main/java/com/v1/config/MyBatisPlusConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym-service-web/src/main/java/com/v1/config/MyBatisPlusConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym-service-web/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/gym-service-web/src/main/resources/application-dev.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,6 +23,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="mybatis-mapper" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -35,25 +32,25 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Wjj-3468272717"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Wjj-3468272717&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Wjj-3468272717/gymnasium-back.git",
-    "accountId": "561d30a2-a292-46b3-b35c-f82c07ed8a6e"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Wjj-3468272717/gymnasium-back.git&quot;,
+    &quot;accountId&quot;: &quot;561d30a2-a292-46b3-b35c-f82c07ed8a6e&quot;
   }
-}]]></component>
-  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
-  <component name="KubernetesApiProvider"><![CDATA[{
-  "isMigrated": true
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 5
-}]]></component>
+}</component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
   <component name="ProjectId" id="3GlyKlv6MhrX3rsegWQVYaKdDeJ" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
@@ -65,7 +62,14 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
+    "Maven.gym-common [clean].executor": "Run",
+    "Maven.gym-parent-project [clean].executor": "Run",
+    "Maven.gym-parent-project [install].executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -75,6 +79,8 @@
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/Project/gymnasium/gymnasium-back/gym-parent-project",
+    "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   }
@@ -100,11 +106,34 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784560390670</updated>
-      <workItem from="1784560391927" duration="3552000" />
+      <workItem from="1784560391927" duration="5349000" />
+      <workItem from="1784604334139" duration="1765000" />
+      <workItem from="1784620521319" duration="10205000" />
     </task>
+    <task id="LOCAL-00001" summary="初始化项目结构">
+      <option name="closed" value="true" />
+      <created>1784601917938</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1784601917938</updated>
+    </task>
+    <task id="LOCAL-00002" summary="初始化项目结构">
+      <option name="closed" value="true" />
+      <created>1784602038773</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1784602038773</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="初始化项目结构" />
+    <option name="LAST_COMMIT_MESSAGE" value="初始化项目结构" />
   </component>
 </project>
