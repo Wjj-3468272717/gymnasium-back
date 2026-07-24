@@ -9,6 +9,11 @@ spring:
     url: jdbc:mysql://localhost:3306/gymnasium?serverTimezone=Asia/Shanghai&characterEncoding=utf-8
     username: root
     password: 123456
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 200MB
+      max-request-size: 500MB
 
 #mybatis plus配置
 mybatis-plus:
@@ -23,3 +28,8 @@ mybatis-plus:
 logging:
   pattern:
     console: '%d{yyyy-MM-dd} [%thread] %-5level %logger- %msg%n'
+#minio设置
+minio:
+  endpoint: http://localhost:9000
+  accessKey: minioadmin
+  secretkey: minioadmin
