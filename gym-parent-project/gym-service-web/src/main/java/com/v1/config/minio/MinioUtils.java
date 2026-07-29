@@ -1,4 +1,4 @@
-package com.v1.config;
+package com.v1.config.minio;
 
 import com.alibaba.fastjson.JSONObject;
 import com.v1.web.image.MinioProp;

@@ -10,5 +10,7 @@ public class PageParam {
     private String name;
     private String phone;
     private String username;
+    private String userType;
+    private String memberId;
 
 }

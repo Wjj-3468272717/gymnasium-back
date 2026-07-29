@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间-->
+<mapper namespace="com.v1.web.goods_order.mapper.GoodsOrderMapper">
+<!--    热销商品-->
+<!--    List<EChartItem> hotGoods();-->
+        <select id="hotGoods" resultType="com.v1.web.home.entity.EChartItem">
+            select g.name, sum(gd.num) as value
+            from goods as g inner join goods_order as gd on g.goods_id = gd.goods_id
+            group by g.goods_id order by value desc limit 7
+        </select>
+<!--    热销卡-->
+<!--    List<EChartItem> hotCards();-->
+        <select id="hotCards" resultType="com.v1.web.home.entity.EChartItem">
+            select ma.card_type as name ,count(ma.apply_id) as value
+            from member_apply as ma
+            GROUP BY ma.card_type,ma.card_day
+            order by value desc limit 7
+        </select>
+
+<!--    //热销课程-->
+<!--    List<EChartItem> hotCourse();-->
+        <select id="hotCourse" resultType="com.v1.web.home.entity.EChartItem">
+            select c.course_name as name, count(mc.member_course_id) as value
+            from course as c left join member_course as mc on c.course_id = mc.course_id
+            group by c.course_id
+        </select>
+</mapper>

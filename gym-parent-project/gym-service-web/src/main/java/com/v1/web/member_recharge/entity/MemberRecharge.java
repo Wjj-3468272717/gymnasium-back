@@ -1,6 +1,7 @@
 package com.v1.web.member_recharge.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -19,4 +20,10 @@ public class MemberRecharge {
     private Date createTime;
     private String createUser;
 
+    //用户名
+    @TableField(exist = false)
+    private String name;
+    //会员卡号
+    @TableField(exist = false)
+    private String username;
 }

@@ -1,7 +1,7 @@
 package com.v1.web.image.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.v1.config.MinioUtils;
+import com.v1.config.minio.MinioUtils;
 import com.v1.utils.ResultUtils;
 import com.v1.utils.ResultVo;
 import lombok.extern.slf4j.Slf4j;

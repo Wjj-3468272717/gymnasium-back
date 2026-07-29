@@ -10,4 +10,11 @@
         update member set money = money + #{para.money}
         where member_id = #{para.memberId}
     </update>
+
+<!--    void subMoney(@Param("param") RechargeParam param);-->
+    <update id="subMoney">
+        update member set money = money - #{param.money}
+        where member_id = #{param.memberId}
+    </update>
+
 </mapper>

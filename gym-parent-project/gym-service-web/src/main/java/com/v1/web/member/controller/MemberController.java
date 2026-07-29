@@ -11,6 +11,9 @@ import com.v1.web.member.entity.RechargeParam;
 import com.v1.web.member.service.MemberService;
 import com.v1.web.member_card.entity.MemberCard;
 import com.v1.web.member_card.service.MemberCardService;
+import com.v1.web.member_recharge.entity.MemberRecharge;
+import com.v1.web.member_recharge.entity.RechargeParamList;
+import com.v1.web.member_recharge.service.MemberRechargeService;
 import com.v1.web.member_role.entity.MemberRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -129,5 +132,23 @@ public class MemberController {
         return ResultUtils.success("充值成功");
     }
 
+    @Autowired
+    MemberRechargeService rechargeService;
+
+    @GetMapping("getMyRecharge")
+    public ResultVo getMyRecharge(RechargeParamList paramList){
+        //判断当前用户是会员还是员工
+        if(paramList.getUserType().equals("1")){//会员
+            IPage<MemberRecharge> rechargeIPage = rechargeService.getRechargeByMember(paramList);
+            return ResultUtils.success("查询成功",rechargeIPage);
+        }else{
+            if(paramList.getUserType().equals("2")){//员工
+                IPage<MemberRecharge> rechargeList = rechargeService.getRechargeList(paramList);
+                return ResultUtils.success("查询成功",rechargeList);
+            }else{
+                return ResultUtils.error("用户类型不存在");
+            }
+        }
+    }
 
 }

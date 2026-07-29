@@ -9,4 +9,6 @@ import java.math.BigDecimal;
 
 public interface MemberMapper extends BaseMapper<Member> {
     int addMoney(@Param("para")RechargeParam param);
+
+    void subMoney(@Param("param") RechargeParam param);
 }

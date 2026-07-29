@@ -3,6 +3,8 @@ package com.v1.web.sys_role.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.v1.utils.ResultUtils;
 import com.v1.utils.ResultVo;
+import com.v1.web.sys_menu.entiry.RolePermissionVo;
+import com.v1.web.sys_role.entity.RoleAssignParam;
 import com.v1.web.sys_role.entity.RoleParam;
 import com.v1.web.sys_role.entity.SysRole;
 import com.v1.web.sys_role.service.SysRoleService;
@@ -90,6 +92,13 @@ public class SysRoleController {
             });
         }
         return ResultUtils.success("查询成功",selectTypeList);
+    }
+
+    //分配权限树，回显查询
+    @GetMapping("getMenuTree")
+    public ResultVo getMenuTree(RoleAssignParam param){
+        RolePermissionVo menuTree = sysRoleService.getMenuTree(param);
+        return ResultUtils.success("查询成功",menuTree);
     }
 
 }

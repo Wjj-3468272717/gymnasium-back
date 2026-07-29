@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间-->
+<mapper namespace="com.v1.web.member_recharge.mapper.MemberRechargeMapper">
+
+<!--    IPage<MemberRecharge> getRechargeList(IPage<MemberRecharge> page);-->
+    <select id="getRechargeList" resultType="com.v1.web.member_recharge.entity.MemberRecharge">
+        select mr.*,m.username,m.name from member_recharge AS mr
+        left join member as m ON m.member_id = mr.member_id
+    </select>
+<!--    IPage<MemberRecharge> getRechargeByMember(IPage<MemberRecharge> page, @Param("memberId") Long memberId);-->
+    <select id="getRechargeByMember" parameterType="long" resultType="com.v1.web.member_recharge.entity.MemberRecharge">
+        select mr.*,m.username,m.name from member_recharge as mr
+        left join member as m on m.member_id = mr.member_id
+        where m.member_id = #{memberId}
+    </select>
+</mapper>

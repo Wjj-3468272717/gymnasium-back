@@ -33,3 +33,11 @@ minio:
   endpoint: http://localhost:9000
   accessKey: minioadmin
   secretkey: minioadmin
+#jwt配置
+jwt:
+  #颁发者
+  issuer: gaobie
+  #私钥
+  secret: com.v1
+  #30分钟过期
+  expiration: 30

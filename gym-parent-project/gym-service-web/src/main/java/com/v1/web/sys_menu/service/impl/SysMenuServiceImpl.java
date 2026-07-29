@@ -9,6 +9,7 @@ import com.v1.web.sys_menu.service.SysMenuService;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -30,5 +31,20 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         menuList.add(menu);
 
         return MakeMenuTree.makeTree(menuList,-1L);
+    }
+
+    @Override
+    public List<SysMenu> getMenuByUserId(Long userId) {
+        return this.baseMapper.getMenuByUserId(userId);
+    }
+
+    @Override
+    public List<SysMenu> getMenuByMemberId(Long userId) {
+        return this.baseMapper.getMenuByMemberId(userId);
+    }
+
+    @Override
+    public List<SysMenu> getMenuByRoleId(Long roleId) {
+        return this.baseMapper.getMenuByRoleId(roleId);
     }
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.v1.utils.ResultUtils;
 import com.v1.utils.ResultVo;
+import com.v1.web.sys_role.entity.SelectType;
 import com.v1.web.sys_user.entity.PageParam;
 import com.v1.web.sys_user.entity.SysUser;
 import com.v1.web.sys_user.service.SysUserService;
@@ -14,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -116,6 +119,25 @@ public class SysUserController {
         q.lambda().eq(SysUserRole::getUserId,userId);
         SysUserRole one = sysUserRoleService.getOne(q);
         return ResultUtils.success("查询成功",one);
+    }
+
+    //查询教师
+    @GetMapping("getTeacher")
+    public ResultVo getTeacher(){
+        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(SysUser::getUserType,"2");
+        List<SysUser> list = sysUserService.list(queryWrapper);
+        //组装数据
+        List<SelectType> selectTypes = new ArrayList<>();
+        if(list.size()>0){
+            list.stream().forEach(item ->{
+                SelectType selectType = new SelectType();
+                selectType.setLabel(item.getNickName());
+                selectType.setValue(item.getUserId());
+                selectTypes.add(selectType);
+            });
+        }
+        return ResultUtils.success("查询成功",selectTypes);
     }
 
 }

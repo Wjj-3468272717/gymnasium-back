@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.v1.utils.ResultUtils;
 import com.v1.web.member.entity.JoinParam;
 import com.v1.web.member.entity.Member;
 import com.v1.web.member.entity.PageParam;
@@ -34,29 +35,35 @@ import java.util.Date;
 public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> implements MemberService {
 
     @Autowired
-    MemberRoleService  memberRoleService;
+    MemberRoleService memberRoleService;
 
     @Override
     public IPage<Member> list(PageParam pageParam) {
-        IPage<Member> ipage = new Page<>(pageParam.getCurrentPage(),pageParam.getPageSize());
+        //构建分页对象
+        IPage<Member> page = new Page(pageParam.getCurrentPage(), pageParam.getPageSize());
+        //构建查询条件
         QueryWrapper<Member> queryWrapper = new QueryWrapper<>();
-        if(StringUtils.isNotEmpty(pageParam.getName())){
-            queryWrapper.lambda().like(Member::getName,pageParam.getName());
+        if (StringUtils.isNotEmpty(pageParam.getName())) {
+            queryWrapper.lambda().eq(Member::getName, pageParam.getName());
         }
-        if(StringUtils.isNotEmpty(pageParam.getPhone())){
-            queryWrapper.lambda().like(Member::getPhone,pageParam.getPhone());
+        if (StringUtils.isNotEmpty(pageParam.getPhone())) {
+            queryWrapper.lambda().eq(Member::getPhone, pageParam.getPhone());
         }
-        if(StringUtils.isNotEmpty(pageParam.getUsername())){
-            queryWrapper.lambda().like(Member::getUsername,pageParam.getUsername());
+        if (StringUtils.isNotEmpty(pageParam.getUsername())) {
+            queryWrapper.lambda().eq(Member::getUsername, pageParam.getUsername());
         }
-        return this.page(ipage, queryWrapper);
+        if (pageParam.getUserType().equals("1")) {
+            queryWrapper.lambda().eq(Member::getMemberId, pageParam.getMemberId());
+        }
+        queryWrapper.lambda().orderByDesc(Member::getJoinTime);
+        return this.baseMapper.selectPage(page, queryWrapper);
     }
 
     @Override
     @Transactional
     public void addMember(Member member) {
         int inserted = this.baseMapper.insert(member);
-        if(inserted > 0){
+        if (inserted > 0) {
             MemberRole role = new MemberRole();
             role.setMemberId(member.getMemberId());
             role.setRoleId(member.getRoleId());
@@ -68,10 +75,10 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
     @Transactional
     public void editMember(Member member) {
         int updated = this.baseMapper.updateById(member);
-        if(updated > 0){
+        if (updated > 0) {
             //删除原因的member_role关联信息
             QueryWrapper<MemberRole> queryWrapper = new QueryWrapper<>();
-            queryWrapper.lambda().eq(MemberRole::getMemberId,member.getMemberId());
+            queryWrapper.lambda().eq(MemberRole::getMemberId, member.getMemberId());
             memberRoleService.remove(queryWrapper);
             //新建member_role
             MemberRole role = new MemberRole();
@@ -85,9 +92,9 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
     @Transactional
     public void deleteMember(Long memberId) {
         int deleted = this.baseMapper.deleteById(memberId);
-        if(deleted > 0) {
+        if (deleted > 0) {
             QueryWrapper<MemberRole> queryWrapper = new QueryWrapper<>();
-            queryWrapper.lambda().eq(MemberRole::getMemberId,memberId);
+            queryWrapper.lambda().eq(MemberRole::getMemberId, memberId);
             this.memberRoleService.remove(queryWrapper);
         }
     }
@@ -95,7 +102,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
     @Override
     public MemberRole getRoleByMemberId(Long memberId) {
         QueryWrapper<MemberRole> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(MemberRole::getMemberId,memberId);
+        queryWrapper.lambda().eq(MemberRole::getMemberId, memberId);
         MemberRole one = memberRoleService.getOne(queryWrapper);
         return one;
     }
@@ -122,14 +129,14 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
         member.setPrice(card.getPrice());
         String endTime = select.getEndTime();
         Calendar calendar = Calendar.getInstance();
-        if(StringUtils.isNotEmpty(endTime)){
+        if (StringUtils.isNotEmpty(endTime)) {
             Date date = new SimpleDateFormat("yyyy-MM-dd").parse(select.getEndTime());
             calendar.setTime(date);
-        }else{
+        } else {
             Date date = new Date();
             calendar.setTime(date);
         }
-        calendar.add(Calendar.DATE,card.getCardDay());
+        calendar.add(Calendar.DATE, card.getCardDay());
         member.setEndTime(new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime()));
         this.baseMapper.updateById(member);
         //插入充值明细
@@ -150,7 +157,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
         recharge.setMoney(param.getMoney());
         recharge.setMemberId(param.getMemberId());
         boolean saved = memberRechargeService.save(recharge);
-        if(saved){
+        if (saved) {
             //更新账户余额
             this.baseMapper.addMoney(param);
         }
