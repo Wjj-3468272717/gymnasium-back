@@ -10,6 +10,7 @@
     <modules>
         <module>gym-common</module>
         <module>gym-api</module>
+        <module>gym-service-user</module>
         <module>gym-service-web</module>
     </modules>
 
