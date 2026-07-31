@@ -24,4 +24,6 @@ public interface MemberRpcService {
     void joinCard(Long memberId, Long cardId);
 
     void recharge(Long memberId, BigDecimal money);
+
+    void resetPassword(Long memberId, String newPassword);
 }

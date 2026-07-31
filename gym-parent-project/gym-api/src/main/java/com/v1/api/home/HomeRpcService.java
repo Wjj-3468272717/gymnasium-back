@@ -7,6 +7,4 @@ public interface HomeRpcService {
     TotalCountDTO getTotalCount();
 
     EChartDTO getEChartData();
-
-    void resetPassword(Long userId, String userType, String newPassword);
 }

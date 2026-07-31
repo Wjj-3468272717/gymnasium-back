@@ -10,4 +10,6 @@ public interface SysUserRpcService {
     SysUserDTO loadUser(String username);
 
     SysUserDTO getUserById(Long userId);
+
+    void resetPassword(Long userId, String newPassword);
 }
