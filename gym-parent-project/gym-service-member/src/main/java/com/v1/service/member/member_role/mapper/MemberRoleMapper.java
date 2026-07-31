@@ -1,0 +1,7 @@
+package com.v1.service.member.member_role.mapper;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.v1.service.member.member_role.entity.MemberRole;
+
+public interface MemberRoleMapper extends BaseMapper<MemberRole> {
+}

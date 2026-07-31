@@ -1,33 +1,37 @@
 package com.v1.web.member.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.v1.api.dto.PageDTO;
+import com.v1.api.dto.PageResultDTO;
+import com.v1.api.dto.member.MemberDTO;
+import com.v1.api.dto.member_card.MemberCardDTO;
+import com.v1.api.dto.member_recharge.MemberRechargeDTO;
+import com.v1.api.dto.member_role.MemberRoleDTO;
+import com.v1.api.member.MemberRpcService;
+import com.v1.api.member_card.MemberCardRpcService;
+import com.v1.api.member_recharge.MemberRechargeRpcService;
+import com.v1.service.member.member.entity.JoinParam;
+import com.v1.service.member.member.entity.RechargeParam;
+import com.v1.service.member.member_recharge.entity.RechargeParamList;
 import com.v1.utils.ResultUtils;
 import com.v1.utils.ResultVo;
-import com.v1.web.member.entity.JoinParam;
-import com.v1.web.member.entity.Member;
-import com.v1.web.member.entity.PageParam;
-import com.v1.web.member.entity.RechargeParam;
-import com.v1.web.member.service.MemberService;
-import com.v1.web.member_card.entity.MemberCard;
-import com.v1.web.member_card.service.MemberCardService;
-import com.v1.web.member_recharge.entity.MemberRecharge;
-import com.v1.web.member_recharge.entity.RechargeParamList;
-import com.v1.web.member_recharge.service.MemberRechargeService;
-import com.v1.web.member_role.entity.MemberRole;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/member")
 public class MemberController {
 
-    @Autowired
-    MemberService memberService;
+    @DubboReference
+    MemberRpcService memberRpcService;
+    @DubboReference
+    MemberCardRpcService memberCardRpcService;
+    @DubboReference
+    MemberRechargeRpcService memberRechargeRpcService;
     @Autowired
     PasswordEncoder passwordEncoder;
 
@@ -37,16 +41,14 @@ public class MemberController {
      * @return
      */
     @PostMapping
-    public ResultVo add(@RequestBody Member member){
+    public ResultVo add(@RequestBody MemberDTO member){
         //判断会员卡号是否重复
-        QueryWrapper<Member> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(Member::getUsername,member.getUsername());
-        Member one = memberService.getOne(queryWrapper);
+        MemberDTO one = memberRpcService.loadUser(member.getUsername());
         if(one != null){
             return ResultUtils.error("会员卡号被占用");
         }
         member.setPassword(passwordEncoder.encode(member.getPassword()));
-        memberService.addMember(member);
+        memberRpcService.addMember(member);
         return ResultUtils.success("会员信息添加成功");
     }
 
@@ -56,15 +58,13 @@ public class MemberController {
      * @return
      */
     @PutMapping
-    public ResultVo edit(@RequestBody Member member){
+    public ResultVo edit(@RequestBody MemberDTO member){
         //判断会员卡号是否重复
-        QueryWrapper<Member> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(Member::getUsername,member.getUsername());
-        Member one = memberService.getOne(queryWrapper);
+        MemberDTO one = memberRpcService.loadUser(member.getUsername());
         if(one != null && !one.getMemberId().equals(member.getMemberId())){
             return ResultUtils.error("会员卡号已被占用");
         }
-        memberService.editMember(member);
+        memberRpcService.editMember(member);
         return ResultUtils.success("编辑成功");
     }
 
@@ -75,30 +75,33 @@ public class MemberController {
      */
     @DeleteMapping("/{memberId}")
     public ResultVo delete(@PathVariable("memberId") Long memberId){
-        memberService.deleteMember(memberId);
+        memberRpcService.deleteMember(memberId);
         return ResultUtils.success("删除成功");
     }
 
     /**
      * 查询会员信息
-     * @param pageParam
+     * @param param
      * @return
      */
     @GetMapping("/list")
-    public ResultVo list(PageParam pageParam){
-        IPage<Member> list =  memberService.list(pageParam);
-        return ResultUtils.success("查询成功",list);
+    public ResultVo list(com.v1.service.member.member.entity.PageParam param){
+        PageDTO page = new PageDTO();
+        page.setCurrentPage(param.getCurrentPage());
+        page.setPageSize(param.getPageSize());
+        Long memberId = null;
+        if (param.getMemberId() != null && !param.getMemberId().isEmpty()) {
+            memberId = Long.parseLong(param.getMemberId());
+        }
+        PageResultDTO<MemberDTO> list = memberRpcService.listMembers(page, param.getName(), param.getPhone(), param.getUsername(), memberId, param.getUserType());
+        return ResultUtils.success("查询成功", list);
     }
 
     @GetMapping("/getRoleByMemberId")
     public ResultVo getRoleByMemberId(Long memberId){
-        MemberRole memberRole = memberService.getRoleByMemberId(memberId);
-        return ResultUtils.success("查询成功",memberRole);
+        MemberRoleDTO memberRole = memberRpcService.getRoleByMemberId(memberId);
+        return ResultUtils.success("查询成功", memberRole);
     }
-
-    @Autowired
-    MemberCardService memberCardService;
-
 
     /**
      * 查询会员卡列表
@@ -106,10 +109,14 @@ public class MemberController {
      */
     @GetMapping("/getCardList")
     public ResultVo getCardList(){
-        QueryWrapper<MemberCard> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(MemberCard::getStatus,"1");
-        List<MemberCard> list = memberCardService.list(queryWrapper);
-        return ResultUtils.success("查询成功",list);
+        PageDTO page = new PageDTO();
+        page.setCurrentPage(1L);
+        page.setPageSize(9999L);
+        PageResultDTO<MemberCardDTO> result = memberCardRpcService.listCards(page, null);
+        List<MemberCardDTO> list = result.getRecords().stream()
+                .filter(card -> "1".equals(card.getStatus()))
+                .collect(Collectors.toList());
+        return ResultUtils.success("查询成功", list);
     }
 
 
@@ -117,11 +124,10 @@ public class MemberController {
      * 办卡提交
      * @param param
      * @return
-     * @throws ParseException
      */
     @PostMapping("/joinApply")
-    public ResultVo joinApply(@RequestBody JoinParam param) throws ParseException {
-        memberService.joinApply(param);
+    public ResultVo joinApply(@RequestBody JoinParam param){
+        memberRpcService.joinCard(param.getMemberId(), param.getCardId());
         return ResultUtils.success("办卡成功");
     }
 
@@ -132,23 +138,26 @@ public class MemberController {
      */
     @PostMapping("/recharge")
     public ResultVo recharge(@RequestBody RechargeParam param){
-        memberService.recharge(param);
+        memberRpcService.recharge(param.getMemberId(), param.getMoney());
         return ResultUtils.success("充值成功");
     }
-
-    @Autowired
-    MemberRechargeService rechargeService;
 
     @GetMapping("getMyRecharge")
     public ResultVo getMyRecharge(RechargeParamList paramList){
         //判断当前用户是会员还是员工
         if(paramList.getUserType().equals("1")){//会员
-            IPage<MemberRecharge> rechargeIPage = rechargeService.getRechargeByMember(paramList);
-            return ResultUtils.success("查询成功",rechargeIPage);
+            PageDTO page = new PageDTO();
+            page.setCurrentPage(paramList.getCurrentPage());
+            page.setPageSize(paramList.getPageSize());
+            PageResultDTO<MemberRechargeDTO> rechargeIPage = memberRechargeRpcService.getRechargeByMember(page, paramList.getMemberId());
+            return ResultUtils.success("查询成功", rechargeIPage);
         }else{
             if(paramList.getUserType().equals("2")){//员工
-                IPage<MemberRecharge> rechargeList = rechargeService.getRechargeList(paramList);
-                return ResultUtils.success("查询成功",rechargeList);
+                PageDTO page = new PageDTO();
+                page.setCurrentPage(paramList.getCurrentPage());
+                page.setPageSize(paramList.getPageSize());
+                PageResultDTO<MemberRechargeDTO> rechargeList = memberRechargeRpcService.getRechargeList(page);
+                return ResultUtils.success("查询成功", rechargeList);
             }else{
                 return ResultUtils.error("用户类型不存在");
             }

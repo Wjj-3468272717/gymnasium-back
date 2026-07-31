@@ -1,14 +1,13 @@
 package com.v1.config.SpringSecurity;
 
+import com.v1.api.dto.member.MemberDTO;
 import com.v1.api.dto.sys_menu.SysMenuDTO;
 import com.v1.api.dto.sys_user.SysUserDTO;
+import com.v1.api.member.MemberRpcService;
 import com.v1.api.sys_menu.SysMenuRpcService;
 import com.v1.api.sys_user.SysUserRpcService;
-import com.v1.web.member.entity.Member;
-import com.v1.web.member.service.MemberService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.dubbo.config.annotation.DubboReference;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,8 +23,8 @@ public class CustomizedUserDetailsService implements UserDetailsService {
 
     @DubboReference
     SysUserRpcService sysUserRpcService;
-    @Autowired
-    MemberService memberService;
+    @DubboReference
+    MemberRpcService memberRpcService;
     @DubboReference
     SysMenuRpcService sysMenuRpcService;
 
@@ -36,7 +35,7 @@ public class CustomizedUserDetailsService implements UserDetailsService {
         String userName = username.substring(0, index);
         String userType = username.substring(index + 1);
         if (userType.equals("1")) {//会员
-            Member member = memberService.loadUser(userName);
+            MemberDTO member = memberRpcService.loadUser(userName);
             if (member == null) {
                 throw new UsernameNotFoundException("用户名或密码错误！");
             }
@@ -48,9 +47,11 @@ public class CustomizedUserDetailsService implements UserDetailsService {
                     .collect(Collectors.toList());
             String[] strings = collect.toArray(new String[collect.size()]);
             List<GrantedAuthority> authorityList = AuthorityUtils.createAuthorityList(strings);
-            //授权
-            member.setAuthorities(authorityList);
-            return member;
+            //返回Spring Security User对象（替代原来的Member实体）
+            return new org.springframework.security.core.userdetails.User(
+                    member.getUsername(),
+                    member.getPassword(),
+                    authorityList);
         } else {
             if (userType.equals("2")) {//员工
                 SysUserDTO user = sysUserRpcService.loadUser(userName);

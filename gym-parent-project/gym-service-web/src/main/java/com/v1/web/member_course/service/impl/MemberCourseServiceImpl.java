@@ -1,13 +1,14 @@
 package com.v1.web.member_course.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.v1.api.dto.member.MemberDTO;
+import com.v1.api.member.MemberRpcService;
 import com.v1.web.course.entity.Course;
 import com.v1.web.course.service.CourseService;
-import com.v1.web.member.entity.RechargeParam;
-import com.v1.web.member.mapper.MemberMapper;
 import com.v1.web.member_course.entity.MemberCourse;
 import com.v1.web.member_course.mapper.MemberCourseMapper;
 import com.v1.web.member_course.service.MemberCourseService;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,8 @@ public class MemberCourseServiceImpl extends ServiceImpl<MemberCourseMapper, Mem
 
     @Autowired
     CourseService courseService;
-    @Autowired
-    MemberMapper memberMapper;
+    @DubboReference
+    MemberRpcService memberRpcService;
 
     //用户选课报名
     @Override
@@ -32,10 +33,9 @@ public class MemberCourseServiceImpl extends ServiceImpl<MemberCourseMapper, Mem
         //插入报名表
         int inserted = this.baseMapper.insert(memberCourse);
         if(inserted > 0){//报名成功，扣除金额
-            RechargeParam param = new RechargeParam();
-            param.setMemberId(memberCourse.getMemberCourseId());
-            param.setMoney(course.getCoursePrice());
-            memberMapper.subMoney(param);
+            MemberDTO member = memberRpcService.getMemberById(memberCourse.getMemberId());
+            member.setMoney(member.getMoney().subtract(course.getCoursePrice()));
+            memberRpcService.editMember(member);
         }
     }
 }

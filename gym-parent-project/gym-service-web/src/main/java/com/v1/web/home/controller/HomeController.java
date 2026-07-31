@@ -1,7 +1,11 @@
 package com.v1.web.home.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.v1.api.dto.PageDTO;
+import com.v1.api.dto.PageResultDTO;
+import com.v1.api.dto.member.MemberDTO;
 import com.v1.api.dto.sys_user.SysUserDTO;
+import com.v1.api.member.MemberRpcService;
 import com.v1.api.sys_user.SysUserRpcService;
 import com.v1.utils.ResultUtils;
 import com.v1.utils.ResultVo;
@@ -11,8 +15,6 @@ import com.v1.web.home.entity.EChart;
 import com.v1.web.home.entity.EChartItem;
 import com.v1.web.home.entity.ResetPassword;
 import com.v1.web.home.entity.TotalCount;
-import com.v1.web.member.entity.Member;
-import com.v1.web.member.service.MemberService;
 import com.v1.web.suggest.entity.Suggest;
 import com.v1.web.suggest.service.SuggestService;
 import org.apache.dubbo.config.annotation.DubboReference;
@@ -31,8 +33,8 @@ import java.util.List;
 @RequestMapping("/api/home")
 public class HomeController {
 
-    @Autowired
-    MemberService memberService;
+    @DubboReference
+    MemberRpcService memberRpcService;
     @DubboReference
     SysUserRpcService userRpcService;
     @Autowired
@@ -45,9 +47,11 @@ public class HomeController {
     //统计总数
     @GetMapping("/getTotal")
     public ResultVo getTotal(){
-        int memberCount = memberService.count();
-        // Use RPC for user count - but we don't have a count method, so use listUsers with pageSize=1
-        // For simplicity, just count locally maintained count
+        PageDTO page = new PageDTO();
+        page.setCurrentPage(1L);
+        page.setPageSize(1L);
+        PageResultDTO<MemberDTO> result = memberRpcService.listMembers(page, null, null, null, null, null);
+        int memberCount = (int) result.getTotal().longValue();
         int userCount = 0;
         int materialCount = materialService.count();
         int orderCount = goodsOrderService.count();
@@ -95,15 +99,9 @@ public class HomeController {
     @PostMapping("/resetPassword")
     public ResultVo resetPassword(@RequestBody ResetPassword resetPassword){
         if(resetPassword.getUserType().equals("1")){//会员
-            Member member = memberService.getById(resetPassword.getUserId());
             String password = passwordEncoder.encode("123456");
-            member.setPassword(password);
-            boolean updated = memberService.updateById(member);
-            if(updated){
-                return ResultUtils.success("密码修改成功");
-            }else{
-                return ResultUtils.error("密码修改失败！");
-            }
+            memberRpcService.resetPassword(resetPassword.getUserId(), password);
+            return ResultUtils.success("密码修改成功");
         }else{
             if(resetPassword.getUserType().equals("2")){//员工
                 String password = passwordEncoder.encode("123456");
@@ -119,18 +117,13 @@ public class HomeController {
     @PostMapping("/updatePassword")
     public ResultVo updatePassword(@RequestBody ResetPassword resetPassword){
         if(resetPassword.getUserType().equals("1")){//会员
-            Member member = memberService.getById(resetPassword.getUserId());
-            if(!passwordEncoder.matches(resetPassword.getOldPassword(), member.getPassword())){
+            MemberDTO member = memberRpcService.getMemberById(resetPassword.getUserId());
+            if(member == null || !passwordEncoder.matches(resetPassword.getOldPassword(), member.getPassword())){
                 return ResultUtils.error("原密码错误！");
             }
             String password = passwordEncoder.encode(resetPassword.getPassword());
-            member.setPassword(password);
-            boolean updated = memberService.updateById(member);
-            if(updated){
-                return ResultUtils.success("密码修改成功");
-            }else{
-                return ResultUtils.error("密码修改失败！");
-            }
+            memberRpcService.resetPassword(resetPassword.getUserId(), password);
+            return ResultUtils.success("密码修改成功");
         }else{
             if(resetPassword.getUserType().equals("2")){//员工
                 SysUserDTO user = userRpcService.getUserById(resetPassword.getUserId());

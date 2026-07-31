@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间-->
+<mapper namespace="com.v1.service.member.member.mapper.MemberMapper">
+
+<!--    int addMoney(@Param("para")RechargeParam param);-->
+    <update id="addMoney">
+        update member set money = money + #{para.money}
+        where member_id = #{para.memberId}
+    </update>
+
+<!--    void subMoney(@Param("param") RechargeParam param);-->
+    <update id="subMoney">
+        update member set money = money - #{param.money}
+        where member_id = #{param.memberId}
+    </update>
+
+</mapper>

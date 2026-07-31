@@ -1,8 +1,10 @@
 package com.v1.web.login.controller;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
+import com.v1.api.dto.member.MemberDTO;
 import com.v1.api.dto.sys_menu.SysMenuDTO;
 import com.v1.api.dto.sys_user.SysUserDTO;
+import com.v1.api.member.MemberRpcService;
 import com.v1.api.sys_menu.SysMenuRpcService;
 import com.v1.api.sys_user.SysUserRpcService;
 import com.v1.config.jwt.JwtUtils;
@@ -12,8 +14,6 @@ import com.v1.web.login.entity.InfoParam;
 import com.v1.web.login.entity.LoginParam;
 import com.v1.web.login.entity.LoginResult;
 import com.v1.web.login.entity.UserInfo;
-import com.v1.web.member.entity.Member;
-import com.v1.web.member.service.MemberService;
 import com.v1.web.sys_menu.entiry.MakeMenuTree;
 import com.v1.web.sys_menu.entiry.RouterVO;
 import org.apache.commons.lang3.StringUtils;
@@ -21,6 +21,7 @@ import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import sun.misc.BASE64Encoder;
@@ -40,8 +41,8 @@ public class LoginController {
 
     @Autowired
     private DefaultKaptcha defaultKaptcha;
-    @Autowired
-    private MemberService memberService;
+    @DubboReference
+    private MemberRpcService memberRpcService;
     @DubboReference
     private SysUserRpcService sysUserRpcService;
     @Autowired
@@ -101,15 +102,16 @@ public class LoginController {
         if (!code.equals(loginParam.getCode())) {
             return ResultUtils.error("验证码错误!");
         }
-        //手动认证：直接验证密码，绕过Spring Security的AuthenticationManager配��问题
+        //手动认证：直接验证密码，绕过Spring Security的AuthenticationManager配置问题
         if (loginParam.getUserType().equals("1")) {//会员用户
-            Member member = memberService.loadUser(loginParam.getUsername());
+            MemberDTO member = memberRpcService.loadUser(loginParam.getUsername());
             if (member == null || !passwordEncoder.matches(loginParam.getPassword(), member.getPassword())) {
                 return ResultUtils.error("用户名或密码错误");
             }
             //设置Spring Security上下文
+            User userDetails = new User(member.getUsername(), member.getPassword(), new ArrayList<>());
             UsernamePasswordAuthenticationToken authToken =
-                    new UsernamePasswordAuthenticationToken(member, null, member.getAuthorities());
+                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authToken);
             //生成token
             Map<String, String> map = new HashMap<>();
@@ -165,7 +167,7 @@ public class LoginController {
                     .map(item -> item.getCode())
                     .collect(Collectors.toList());
             String[] strings = collection.toArray(new String[collection.size()]);
-            Member member = memberService.getById(param.getUserId());
+            MemberDTO member = memberRpcService.getMemberById(param.getUserId());
             userInfo.setUserId(member.getMemberId());
             userInfo.setPermissions(strings);
             userInfo.setName(member.getName());

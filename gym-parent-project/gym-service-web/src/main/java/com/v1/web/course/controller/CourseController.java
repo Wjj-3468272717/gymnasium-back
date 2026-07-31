@@ -3,18 +3,19 @@ package com.v1.web.course.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.v1.api.dto.member.MemberDTO;
+import com.v1.api.member.MemberRpcService;
 import com.v1.utils.ResultUtils;
 import com.v1.utils.ResultVo;
 import com.v1.web.course.entity.Course;
 import com.v1.web.course.entity.CourseList;
 import com.v1.web.course.entity.PageParam;
 import com.v1.web.course.service.CourseService;
-import com.v1.web.member.entity.Member;
-import com.v1.web.member.service.MemberService;
 import com.v1.web.member_course.entity.MemberCourse;
 import com.v1.web.member_course.service.MemberCourseService;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,8 +27,8 @@ public class CourseController {
     CourseService courseService;
     @Autowired
     private MemberCourseService memberCourseService;
-    @Autowired
-    private MemberService memberService;
+    @DubboReference
+    private MemberRpcService memberRpcService;
 
     /**
      * 新增课程
@@ -95,7 +96,7 @@ public class CourseController {
         }
         //判断余额
         Course course = courseService.getById(memberCourse.getCourseId());
-        Member member = memberService.getById(memberCourse.getMemberId());
+        MemberDTO member = memberRpcService.getMemberById(memberCourse.getMemberId());
         int compared = member.getMoney().compareTo(course.getCoursePrice());
         if(compared == -1){
             return ResultUtils.error("您的余额不足，请先充值");
