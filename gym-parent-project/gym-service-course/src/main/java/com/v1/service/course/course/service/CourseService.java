@@ -1,9 +1,9 @@
-package com.v1.web.course.service;
+package com.v1.service.course.course.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.v1.web.course.entity.Course;
-import com.v1.web.course.entity.CourseList;
+import com.v1.service.course.course.entity.Course;
+import com.v1.service.course.course.entity.CourseList;
 
 public interface CourseService extends IService<Course> {
     /**

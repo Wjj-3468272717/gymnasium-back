@@ -12,6 +12,7 @@
         <module>gym-api</module>
         <module>gym-service-user</module>
         <module>gym-service-member</module>
+        <module>gym-service-course</module>
         <module>gym-service-web</module>
     </modules>
 

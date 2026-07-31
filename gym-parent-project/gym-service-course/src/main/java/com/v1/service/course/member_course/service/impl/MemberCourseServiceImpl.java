@@ -1,13 +1,13 @@
-package com.v1.web.member_course.service.impl;
+package com.v1.service.course.member_course.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.v1.api.dto.member.MemberDTO;
 import com.v1.api.member.MemberRpcService;
-import com.v1.web.course.entity.Course;
-import com.v1.web.course.service.CourseService;
-import com.v1.web.member_course.entity.MemberCourse;
-import com.v1.web.member_course.mapper.MemberCourseMapper;
-import com.v1.web.member_course.service.MemberCourseService;
+import com.v1.service.course.course.entity.Course;
+import com.v1.service.course.course.service.CourseService;
+import com.v1.service.course.member_course.entity.MemberCourse;
+import com.v1.service.course.member_course.mapper.MemberCourseMapper;
+import com.v1.service.course.member_course.service.MemberCourseService;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

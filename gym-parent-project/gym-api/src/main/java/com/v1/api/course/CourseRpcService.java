@@ -14,4 +14,6 @@ public interface CourseRpcService {
     void updateCourse(CourseDTO course);
 
     void deleteCourse(Long courseId);
+
+    PageResultDTO<CourseDTO> getCoursesByTeacherId(PageDTO page, Long teacherId);
 }

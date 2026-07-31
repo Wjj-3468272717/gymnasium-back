@@ -5,15 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="48ee24d5-9495-4356-8f9f-8fe758ea0ca5" name="Changes" comment="初始化项目结构">
-      <change beforePath="$PROJECT_DIR$/.idea/MarsCodeWorkspaceAppSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/MarsCodeWorkspaceAppSettings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym-common/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gym-common/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym-common/src/main/java/com/v1/utils/ResultUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym-common/src/main/java/com/v1/utils/ResultUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym-service-web/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gym-service-web/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym-service-web/src/main/java/com/v1/GYMServiceWebApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym-service-web/src/main/java/com/v1/GYMServiceWebApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym-service-web/src/main/java/com/v1/config/MyBatisPlusConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym-service-web/src/main/java/com/v1/config/MyBatisPlusConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym-service-web/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/gym-service-web/src/main/resources/application-dev.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,18 +70,50 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.GYMServiceWebApplication.executor": "Run",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "worktree-dubbo-phase1",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Project/gymnasium/gymnasium-back/gym-parent-project",
+    "last_opened_file_path": "D:/Project/gymnasium/gymnasium-back/.claude/worktrees/dubbo-phase1/gym-parent-project",
     "nodejs_package_manager_path": "npm",
+    "run.configurations.included.in.services": "true",
     "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="KtorApplicationConfigurationType" />
+        <option value="MicronautRunConfigurationType" />
+        <option value="QuarkusRunConfigurationType" />
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
+  </component>
+  <component name="RunManager" selected="Spring Boot.GYMServiceWebApplication">
     <configuration name="GYMServiceWebApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="gym-service-web" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.v1.GYMServiceWebApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GymServiceCourseApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="gym-service-course" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.v1.GymServiceCourseApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GymServiceMemberApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="gym-service-member" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.v1.GymServiceMemberApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GymServiceUserApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="gym-service-user" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.v1.GymServiceUserApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -109,6 +134,7 @@
       <workItem from="1784560391927" duration="5349000" />
       <workItem from="1784604334139" duration="1765000" />
       <workItem from="1784620521319" duration="10205000" />
+      <workItem from="1785517526076" duration="3097000" />
     </task>
     <task id="LOCAL-00001" summary="初始化项目结构">
       <option name="closed" value="true" />

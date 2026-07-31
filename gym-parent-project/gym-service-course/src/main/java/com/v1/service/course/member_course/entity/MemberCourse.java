@@ -1,4 +1,4 @@
-package com.v1.web.member_course.entity;
+package com.v1.service.course.member_course.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

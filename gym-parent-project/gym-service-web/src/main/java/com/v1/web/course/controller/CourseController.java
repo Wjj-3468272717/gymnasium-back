@@ -1,32 +1,27 @@
 package com.v1.web.course.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.v1.api.course.CourseRpcService;
+import com.v1.api.dto.PageDTO;
+import com.v1.api.dto.PageResultDTO;
+import com.v1.api.dto.course.CourseDTO;
 import com.v1.api.dto.member.MemberDTO;
+import com.v1.api.dto.member_course.MemberCourseDTO;
 import com.v1.api.member.MemberRpcService;
+import com.v1.api.member_course.MemberCourseRpcService;
 import com.v1.utils.ResultUtils;
 import com.v1.utils.ResultVo;
-import com.v1.web.course.entity.Course;
-import com.v1.web.course.entity.CourseList;
 import com.v1.web.course.entity.PageParam;
-import com.v1.web.course.service.CourseService;
-import com.v1.web.member_course.entity.MemberCourse;
-import com.v1.web.member_course.service.MemberCourseService;
-import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboReference;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/course")
 public class CourseController {
 
-    @Autowired
-    CourseService courseService;
-    @Autowired
-    private MemberCourseService memberCourseService;
+    @DubboReference
+    private CourseRpcService courseRpcService;
+    @DubboReference
+    private MemberCourseRpcService memberCourseRpcService;
     @DubboReference
     private MemberRpcService memberRpcService;
 
@@ -36,13 +31,9 @@ public class CourseController {
      * @return
      */
     @PostMapping
-    public ResultVo add(@RequestBody Course course){
-        boolean updated = courseService.save(course);
-        if(updated){
-            return ResultUtils.success("新增成功");
-        }else{
-            return ResultUtils.error("新增失败");
-        }
+    public ResultVo add(@RequestBody CourseDTO course){
+        courseRpcService.addCourse(course);
+        return ResultUtils.success("新增成功");
     }
 
     /**
@@ -51,13 +42,9 @@ public class CourseController {
      * @return
      */
     @PutMapping
-    public ResultVo edit(@RequestBody Course course){
-        boolean updated = courseService.updateById(course);
-        if(updated){
-            return ResultUtils.success("编辑成功");
-        }else{
-            return ResultUtils.error("编辑失败");
-        }
+    public ResultVo edit(@RequestBody CourseDTO course){
+        courseRpcService.updateCourse(course);
+        return ResultUtils.success("编辑成功");
     }
 
     /**
@@ -67,41 +54,37 @@ public class CourseController {
      */
     @DeleteMapping("/{courseId}")
     public ResultVo delete(@PathVariable("courseId") Long courseId){
-        boolean updated = courseService.removeById(courseId);
-        if(updated){
-            return ResultUtils.success("删除成功");
-        }else{
-            return ResultUtils.error("删除失败");
-        }
+        courseRpcService.deleteCourse(courseId);
+        return ResultUtils.success("删除成功");
     }
 
     /**
      * 分页查询课程
      */
     @GetMapping("/list")
-    public ResultVo list(CourseList courseList){
-        IPage<Course> page =  courseService.list(courseList);
-        return ResultUtils.success("查询成功",page);
+    public ResultVo list(Long currentPage, Long pageSize, String courseName, String teacherName){
+        PageDTO page = new PageDTO();
+        page.setCurrentPage(currentPage);
+        page.setPageSize(pageSize);
+        PageResultDTO<CourseDTO> result = courseRpcService.listCourses(page, courseName, teacherName);
+        return ResultUtils.success("查询成功", result);
     }
 
     //报名课程
     @PostMapping("/joinCourse")
-    public ResultVo joinCourse(@RequestBody MemberCourse memberCourse){
+    public ResultVo joinCourse(@RequestBody MemberCourseDTO memberCourse){
         //查询用户是否已经报名
-        QueryWrapper<MemberCourse> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(MemberCourse::getCourseId,memberCourse.getCourseId()).eq(MemberCourse::getMemberId,memberCourse.getMemberId());
-        MemberCourse one = memberCourseService.getOne(queryWrapper);
-        if(one != null){
+        if(memberCourseRpcService.hasJoinedCourse(memberCourse.getMemberId(), memberCourse.getCourseId())){
             return ResultUtils.error("您已经报名过该课程");
         }
         //判断余额
-        Course course = courseService.getById(memberCourse.getCourseId());
+        CourseDTO course = courseRpcService.getCourseById(memberCourse.getCourseId());
         MemberDTO member = memberRpcService.getMemberById(memberCourse.getMemberId());
         int compared = member.getMoney().compareTo(course.getCoursePrice());
         if(compared == -1){
             return ResultUtils.error("您的余额不足，请先充值");
         }else{
-            memberCourseService.joinCourse(memberCourse);
+            memberCourseRpcService.joinCourse(memberCourse);
             return ResultUtils.success("报名成功");
         }
     }
@@ -109,20 +92,16 @@ public class CourseController {
     //我的课程列表
     @GetMapping("/getMyCourseList")
     public ResultVo getMyCourseList(PageParam param){
+        PageDTO page = new PageDTO();
+        page.setCurrentPage(param.getCurrentPage());
+        page.setPageSize(param.getPageSize());
         if(param.getUserType().equals("1")){//会员
-            IPage<MemberCourse> page = new Page<>(param.getCurrentPage(), param.getPageSize());
-            QueryWrapper<MemberCourse> queryWrapper = new QueryWrapper<>();
-            queryWrapper.lambda().eq(MemberCourse::getMemberId,param.getUserId());
-            IPage<MemberCourse> list = memberCourseService.page(page,queryWrapper);
-            return ResultUtils.success("查询成功",list);
+            PageResultDTO<MemberCourseDTO> list = memberCourseRpcService.getMyCourseList(page, param.getUserId());
+            return ResultUtils.success("查询成功", list);
         }else{//老师
-            IPage<Course> page = new Page<>(param.getCurrentPage(), param.getPageSize());
-            QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
-            queryWrapper.lambda().eq(Course::getTeacherId,param.getUserId());
-            IPage<Course> list = courseService.page(page,queryWrapper);
-            return ResultUtils.success("查询成功",list);
+            PageResultDTO<CourseDTO> list = courseRpcService.getCoursesByTeacherId(page, param.getUserId());
+            return ResultUtils.success("查询成功", list);
         }
     }
-
 
 }

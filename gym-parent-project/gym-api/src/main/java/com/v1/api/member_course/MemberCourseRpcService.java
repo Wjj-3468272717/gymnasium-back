@@ -8,4 +8,6 @@ public interface MemberCourseRpcService {
     void joinCourse(MemberCourseDTO memberCourse);
 
     PageResultDTO<MemberCourseDTO> getMyCourseList(PageDTO page, Long memberId);
+
+    boolean hasJoinedCourse(Long memberId, Long courseId);
 }
