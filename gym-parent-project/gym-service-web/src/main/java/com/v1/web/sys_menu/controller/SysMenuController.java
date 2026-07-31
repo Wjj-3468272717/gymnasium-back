@@ -43,7 +43,7 @@ public class SysMenuController {
     @PutMapping
     public ResultVo editMenu(@RequestBody SysMenu sysMenu){
         sysMenu.setUpdateTime(new Date());
-        boolean updated = menuService.save(sysMenu);
+        boolean updated = menuService.updateById(sysMenu);
         if(updated){
             return ResultUtils.success("编辑成功!");
         }else{

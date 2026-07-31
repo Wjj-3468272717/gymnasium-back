@@ -90,7 +90,7 @@ public class MemberController {
         return ResultUtils.success("查询成功",list);
     }
 
-    @GetMapping("/getRoleMemberId")
+    @GetMapping("/getRoleByMemberId")
     public ResultVo getRoleByMemberId(Long memberId){
         MemberRole memberRole = memberService.getRoleByMemberId(memberId);
         return ResultUtils.success("查询成功",memberRole);

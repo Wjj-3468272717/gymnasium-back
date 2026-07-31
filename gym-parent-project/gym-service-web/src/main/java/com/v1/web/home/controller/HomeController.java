@@ -20,7 +20,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -90,15 +89,10 @@ public class HomeController {
     PasswordEncoder passwordEncoder;
 
     //重置密码
-    @PostMapping
+    @PostMapping("/resetPassword")
     public ResultVo resetPassword(@RequestBody ResetPassword resetPassword){
         if(resetPassword.getUserType().equals("1")){//会员
             Member member = memberService.getById(resetPassword.getUserId());
-            String oldPassword = DigestUtils.md5DigestAsHex(resetPassword.getOldPassword().getBytes());
-            if(!member.getPassword().equals(oldPassword)){
-                return ResultUtils.error("原密码错误！");
-            }
-//            String password = DigestUtils.md5DigestAsHex("123456".getBytes());
             String password = passwordEncoder.encode("123456");
             member.setPassword(password);
             boolean updated = memberService.updateById(member);
@@ -110,11 +104,6 @@ public class HomeController {
         }else{
             if(resetPassword.getUserType().equals("2")){//员工
                 SysUser user = userService.getById(resetPassword.getUserId());
-                String oldPassword = DigestUtils.md5DigestAsHex(resetPassword.getOldPassword().getBytes());
-                if(!user.getPassword().equals(oldPassword)){
-                    return ResultUtils.error("原密码错误！");
-                }
-//                String password = DigestUtils.md5DigestAsHex("123456".getBytes());
                 String password = passwordEncoder.encode("123456");
                 user.setPassword(password);
                 boolean updated = userService.updateById(user);
@@ -134,11 +123,9 @@ public class HomeController {
     public ResultVo updatePassword(@RequestBody ResetPassword resetPassword){
         if(resetPassword.getUserType().equals("1")){//会员
             Member member = memberService.getById(resetPassword.getUserId());
-//            String oldPassword = DigestUtils.md5DigestAsHex(resetPassword.getOldPassword().getBytes());
-            if(passwordEncoder.matches(resetPassword.getOldPassword(),member.getPassword())){
+            if(!passwordEncoder.matches(resetPassword.getOldPassword(),member.getPassword())){
                 return ResultUtils.error("原密码错误！");
             }
-//            String password = DigestUtils.md5DigestAsHex(resetPassword.getPassword().getBytes());
             String password = passwordEncoder.encode(resetPassword.getPassword());
             member.setPassword(password);
             boolean updated = memberService.updateById(member);
@@ -150,11 +137,9 @@ public class HomeController {
         }else{
             if(resetPassword.getUserType().equals("2")){//员工
                 SysUser user = userService.getById(resetPassword.getUserId());
-//                String oldPassword = DigestUtils.md5DigestAsHex(resetPassword.getOldPassword().getBytes());
-                if(passwordEncoder.matches(resetPassword.getOldPassword(),user.getPassword())){
+                if(!passwordEncoder.matches(resetPassword.getOldPassword(),user.getPassword())){
                     return ResultUtils.error("原密码错误！");
                 }
-//                String password = DigestUtils.md5DigestAsHex(resetPassword.getPassword().getBytes());
                 String password = passwordEncoder.encode(resetPassword.getPassword());
                 user.setPassword(password);
                 boolean updated = userService.updateById(user);

@@ -13,7 +13,6 @@ import com.v1.web.sys_user_role.service.SysUserRoleService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -77,7 +76,7 @@ public class SysUserController {
         }
         //密码加密
         if(StringUtils.isNotEmpty(sysUser.getPassword())){
-            sysUser.setPassword(DigestUtils.md5DigestAsHex(sysUser.getPassword().getBytes()));
+            sysUser.setPassword(passwordEncoder.encode(sysUser.getPassword()));
         }
         sysUser.setUpdateTime(new Date());
         boolean updated = sysUserService.updateById(sysUser);

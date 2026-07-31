@@ -221,7 +221,7 @@ public class LoginController {
                 if (StringUtils.isNotEmpty(user.getIsAdmin()) && user.getIsAdmin().equals("1")) {
                     menus = menuService.list();
                 } else {
-                    menuService.getMenuByUserId(user.getUserId());
+                    menus = menuService.getMenuByUserId(user.getUserId());
                 }
                 List<SysMenu> collect = Optional
                         .ofNullable(menus)
