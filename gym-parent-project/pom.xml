@@ -32,6 +32,9 @@
         <mysql-connection.version>8.0.21</mysql-connection.version>
         <jwt.version>3.10.3</jwt.version>
         <easypoi.version>4.2.0</easypoi.version>
+        <dubbo.version>2.7.8</dubbo.version>
+        <dubbo-nacos.version>2.7.8</dubbo-nacos.version>
+        <nacos-client.version>1.4.1</nacos-client.version>
     </properties>
 
     <dependencyManagement>
@@ -98,6 +101,24 @@
                 <groupId>cn.afterturn</groupId>
                 <artifactId>easypoi-spring-boot-starter</artifactId>
                 <version>${easypoi.version}</version>
+            </dependency>
+            <!-- Dubbo Spring Boot Starter -->
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-spring-boot-starter</artifactId>
+                <version>${dubbo.version}</version>
+            </dependency>
+            <!-- Dubbo Nacos 注册中心适配 -->
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-registry-nacos</artifactId>
+                <version>${dubbo-nacos.version}</version>
+            </dependency>
+            <!-- Nacos Client -->
+            <dependency>
+                <groupId>com.alibaba.nacos</groupId>
+                <artifactId>nacos-client</artifactId>
+                <version>${nacos-client.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
