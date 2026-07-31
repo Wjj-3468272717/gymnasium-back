@@ -20,4 +20,6 @@ public interface MemberService extends IService<Member> {
 
     void joinApply(JoinParam param) throws ParseException;
     void recharge(RechargeParam param);
+
+    Member loadUser(String username);
 }

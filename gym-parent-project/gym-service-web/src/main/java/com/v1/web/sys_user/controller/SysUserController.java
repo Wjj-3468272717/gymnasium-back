@@ -12,6 +12,7 @@ import com.v1.web.sys_user_role.entiry.SysUserRole;
 import com.v1.web.sys_user_role.service.SysUserRoleService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,8 @@ public class SysUserController {
     private SysUserService sysUserService;
     @Autowired
     private SysUserRoleService sysUserRoleService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /**
      * 新增用户
@@ -43,9 +46,10 @@ public class SysUserController {
             return ResultUtils.error("用户名已经存在!");
         }
         //密码加密
-        if(StringUtils.isNotEmpty(sysUser.getPassword())){
-            sysUser.setPassword(DigestUtils.md5DigestAsHex(sysUser.getPassword().getBytes()));
-        }
+//        if(StringUtils.isNotEmpty(sysUser.getPassword())){
+//            sysUser.setPassword(DigestUtils.md5DigestAsHex(sysUser.getPassword().getBytes()));
+//        }
+        sysUser.setPassword(passwordEncoder.encode(sysUser.getPassword()));
         sysUser.setIsAdmin("0");
         sysUser.setCreateTime(new Date());
 

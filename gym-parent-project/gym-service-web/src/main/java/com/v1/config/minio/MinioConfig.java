@@ -1,6 +1,5 @@
 package com.v1.config.minio;
 
-import com.v1.web.image.MinioProp;
 import io.minio.MinioClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

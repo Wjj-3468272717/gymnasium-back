@@ -16,6 +16,7 @@ import com.v1.web.member_recharge.entity.RechargeParamList;
 import com.v1.web.member_recharge.service.MemberRechargeService;
 import com.v1.web.member_role.entity.MemberRole;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -27,6 +28,8 @@ public class MemberController {
 
     @Autowired
     MemberService memberService;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     /**
      * 新增会员
@@ -42,6 +45,7 @@ public class MemberController {
         if(one != null){
             return ResultUtils.error("会员卡号被占用");
         }
+        member.setPassword(passwordEncoder.encode(member.getPassword()));
         memberService.addMember(member);
         return ResultUtils.success("会员信息添加成功");
     }

@@ -1,7 +1,6 @@
 package com.v1.config.minio;
 
 import com.alibaba.fastjson.JSONObject;
-import com.v1.web.image.MinioProp;
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;

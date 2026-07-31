@@ -10,6 +10,7 @@ import com.v1.web.sys_role.entity.SysRole;
 import com.v1.web.sys_role.service.SysRoleService;
 import com.v1.web.sys_role.entity.SelectType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class SysRoleController {
      * @return
      */
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('sys_role_add')")
     public ResultVo addRole(@RequestBody SysRole role){
         role.setCreateTime(new Date());
         boolean saved = sysRoleService.save(role);

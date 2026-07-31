@@ -162,4 +162,11 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
             this.baseMapper.addMoney(param);
         }
     }
+
+    @Override
+    public Member loadUser(String username) {
+        QueryWrapper<Member> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Member::getUsername,username);
+        return this.baseMapper.selectOne(queryWrapper);
+    }
 }
