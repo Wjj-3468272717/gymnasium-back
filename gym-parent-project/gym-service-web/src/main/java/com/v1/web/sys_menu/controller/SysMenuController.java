@@ -3,9 +3,9 @@ package com.v1.web.sys_menu.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.v1.utils.ResultUtils;
 import com.v1.utils.ResultVo;
-import com.v1.web.sys_menu.entiry.MakeMenuTree;
-import com.v1.web.sys_menu.entiry.SysMenu;
-import com.v1.web.sys_menu.service.SysMenuService;
+import com.v1.service.user.sys_menu.entiry.MakeMenuTree;
+import com.v1.service.user.sys_menu.entiry.SysMenu;
+import com.v1.service.user.sys_menu.service.SysMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

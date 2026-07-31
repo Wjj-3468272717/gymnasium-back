@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间-->
+<mapper namespace="com.v1.service.user.sys_role_menu.mapper.SysRoleMenuMapper">
+<!--    boolean saveRoleMenu(@Param("roleId") Long roleId, @Param("menuIds")List<Long> menuIds);-->
+    <insert id="saveRoleMenu">
+        insert into sys_role_menu(role_id,menu_id)
+        values
+            <foreach collection="menuIds" separator="," index="index" item="menuId">
+                (#{roleId},#{menuId})
+            </foreach>
+    </insert>
+</mapper>

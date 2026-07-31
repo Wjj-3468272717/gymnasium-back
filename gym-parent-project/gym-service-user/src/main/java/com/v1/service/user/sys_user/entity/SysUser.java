@@ -1,4 +1,4 @@
-package com.v1.web.member.entity;
+package com.v1.service.user.sys_user.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -10,35 +10,32 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.Date;
 
 @Data
-@TableName(value = "member")
-public class Member implements UserDetails {
-
+@TableName(value = "sys_user")
+public class SysUser  implements UserDetails {
     @TableId(type = IdType.AUTO)
-    private Long memberId;
-
+    private Long userId;
+    //表明roleId字段不属于sys_user表，需要排除
     @TableField(exist = false)
     private Long roleId;
-
-    private String name;
-    private String sex;
-    private String phone;
-    private Integer age;
-    private String birthday;
-    private Integer height;
-    private Integer weight;
-    private Integer waist;
-    private String joinTime;
-    private String endTime;
     private String username;
     private String password;
+    private String phone;
+    private String email;
+    private String sex;
+    private String isAdmin;
+    //类型（1：员工 2：教练）
+    private String userType;
+    //状态 0：停用 1：启用
     private String status;
-
-    private String cardType;
-    private Integer cardDay;
-    private BigDecimal price;
-    private  BigDecimal money;
+    private BigDecimal salary;
+    private String nickName;
+    //创建时间
+    private Date createTime;
+    //更新时间
+    private Date updateTime;
 
     //帐户是否过期(1 未过期，0已过期)
     private boolean isAccountNonExpired = true;
@@ -51,5 +48,4 @@ public class Member implements UserDetails {
     // 用户权限字段的集合 authorities字段不属于sys_user表，需要排除
     @TableField(exist = false)
     Collection<? extends GrantedAuthority> authorities;
-
 }

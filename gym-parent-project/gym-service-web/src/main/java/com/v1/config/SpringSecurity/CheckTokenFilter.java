@@ -2,7 +2,7 @@ package com.v1.config.SpringSecurity;
 
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.v1.config.jwt.JwtUtils;
+import com.v1.service.user.config.JwtUtils;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;

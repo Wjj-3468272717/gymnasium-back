@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @EnableDubbo
-@MapperScan("com.v1.service.user.mapper")
+@MapperScan("com.v1.service.user.**.mapper")
 public class GymServiceUserApplication {
     public static void main(String[] args) {
         SpringApplication.run(GymServiceUserApplication.class, args);
