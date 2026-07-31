@@ -42,6 +42,19 @@ jwt:
   #30分钟过期
   expiration: 30
 
+# Dubbo配置
+dubbo:
+  application:
+    name: gym-service-web
+  registry:
+    address: nacos://127.0.0.1:8848
+  protocol:
+    name: dubbo
+    port: 20880
+  consumer:
+    check: false
+    timeout: 3000
+
 #不需要token验证的请求，逗号分隔配置
 ignore:
   url: /api/login/login,/api/login/image

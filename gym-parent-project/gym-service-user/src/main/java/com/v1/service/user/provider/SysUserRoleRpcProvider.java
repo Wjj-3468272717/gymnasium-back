@@ -28,4 +28,12 @@ public class SysUserRoleRpcProvider implements SysUserRoleRpcService {
             sysUserRoleService.updateById(userRole);
         }
     }
+
+    @Override
+    public Long getUserRoleId(Long userId) {
+        QueryWrapper<SysUserRole> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(SysUserRole::getUserId, userId);
+        SysUserRole userRole = sysUserRoleService.getOne(queryWrapper);
+        return userRole != null ? userRole.getRoleId() : null;
+    }
 }

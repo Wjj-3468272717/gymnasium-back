@@ -1,5 +1,6 @@
 package com.v1.service.user.provider;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.v1.api.dto.PageDTO;
 import com.v1.api.dto.PageResultDTO;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @DubboService
@@ -75,5 +78,41 @@ public class SysUserRpcProvider implements SysUserRpcService {
             entity.setPassword(PASSWORD_ENCODER.encode(newPassword));
             sysUserService.updateById(entity);
         }
+    }
+
+    @Override
+    public Boolean saveUser(SysUserDTO user) {
+        SysUser entity = new SysUser();
+        BeanUtils.copyProperties(user, entity);
+        entity.setCreateTime(new Date());
+        return sysUserService.save(entity);
+    }
+
+    @Override
+    public Boolean updateUser(SysUserDTO user) {
+        SysUser entity = sysUserService.getById(user.getUserId());
+        if (entity == null) {
+            return false;
+        }
+        BeanUtils.copyProperties(user, entity, "password", "isAdmin", "createTime");
+        entity.setUpdateTime(new Date());
+        return sysUserService.updateById(entity);
+    }
+
+    @Override
+    public Boolean deleteUser(Long userId) {
+        return sysUserService.removeById(userId);
+    }
+
+    @Override
+    public List<SysUserDTO> getTeachers() {
+        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(SysUser::getUserType, "2");
+        List<SysUser> list = sysUserService.list(queryWrapper);
+        return list.stream().map(entity -> {
+            SysUserDTO dto = new SysUserDTO();
+            BeanUtils.copyProperties(entity, dto);
+            return dto;
+        }).collect(Collectors.toList());
     }
 }
