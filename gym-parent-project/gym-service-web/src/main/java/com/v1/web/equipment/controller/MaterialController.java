@@ -1,70 +1,46 @@
 package com.v1.web.equipment.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.v1.api.dto.PageDTO;
+import com.v1.api.dto.PageResultDTO;
+import com.v1.api.dto.equipment.MaterialDTO;
+import com.v1.api.equipment.MaterialRpcService;
 import com.v1.utils.ResultUtils;
 import com.v1.utils.ResultVo;
-import com.v1.web.equipment.entity.ListParam;
-import com.v1.web.equipment.entity.Material;
-import com.v1.web.equipment.service.MaterialService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/material")
 public class MaterialController {
 
-    @Autowired
-    MaterialService materialService;
+    @DubboReference
+    MaterialRpcService materialRpcService;
 
-    /**
-     * 新增设备
-     * @param material
-     * @return
-     */
     @PostMapping
-    public ResultVo add(@RequestBody Material material){
-        boolean updated = materialService.save(material);
-        if(updated){
-            return ResultUtils.success("新增成功");
-        }else{
-            return ResultUtils.error("新增失败");
-        }
+    public ResultVo add(@RequestBody MaterialDTO material){
+        materialRpcService.addMaterial(material);
+        return ResultUtils.success("新增成功");
     }
 
-    /**
-     * 修改设备
-     * @param material
-     * @return
-     */
     @PutMapping
-    public ResultVo edit(@RequestBody Material material){
-        boolean updated = materialService.updateById(material);
-        if(updated){
-            return ResultUtils.success("编辑成功");
-        }else{
-            return ResultUtils.error("编辑失败");
-        }
+    public ResultVo edit(@RequestBody MaterialDTO material){
+        materialRpcService.updateMaterial(material);
+        return ResultUtils.success("编辑成功");
     }
 
-    /**
-     * 删除设备
-     * @param id
-     * @return
-     */
     @DeleteMapping("/{id}")
     public ResultVo delete(@PathVariable("id") Long id){
-        boolean updated = materialService.removeById(id);
-        if(updated){
-            return ResultUtils.success("删除成功");
-        }else{
-            return ResultUtils.error("删除失败");
-        }
+        materialRpcService.deleteMaterial(id);
+        return ResultUtils.success("删除成功");
     }
 
     @GetMapping("/list")
-    public ResultVo list(ListParam listParam){
-        IPage<Material> list =  materialService.list(listParam);
-        return ResultUtils.success("查询成功",list);
+    public ResultVo list(MaterialDTO listParam){
+        PageDTO page = new PageDTO();
+        page.setCurrentPage(1L);
+        page.setPageSize(10L);
+        PageResultDTO<MaterialDTO> list = materialRpcService.listMaterials(page, listParam.getName());
+        return ResultUtils.success("查询成功", list);
     }
 
 }

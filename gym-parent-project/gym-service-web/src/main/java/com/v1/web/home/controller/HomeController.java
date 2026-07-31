@@ -3,16 +3,16 @@ package com.v1.web.home.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.v1.api.dto.PageDTO;
 import com.v1.api.dto.PageResultDTO;
+import com.v1.api.dto.home.EChartItemDTO;
 import com.v1.api.dto.member.MemberDTO;
 import com.v1.api.dto.sys_user.SysUserDTO;
+import com.v1.api.equipment.MaterialRpcService;
+import com.v1.api.goods_order.GoodsOrderRpcService;
 import com.v1.api.member.MemberRpcService;
 import com.v1.api.sys_user.SysUserRpcService;
 import com.v1.utils.ResultUtils;
 import com.v1.utils.ResultVo;
-import com.v1.web.equipment.service.MaterialService;
-import com.v1.web.goods_order.service.GoodsOrderService;
 import com.v1.web.home.entity.EChart;
-import com.v1.web.home.entity.EChartItem;
 import com.v1.web.home.entity.ResetPassword;
 import com.v1.web.home.entity.TotalCount;
 import com.v1.web.suggest.entity.Suggest;
@@ -37,10 +37,10 @@ public class HomeController {
     MemberRpcService memberRpcService;
     @DubboReference
     SysUserRpcService userRpcService;
-    @Autowired
-    MaterialService materialService;
-    @Autowired
-    GoodsOrderService goodsOrderService;
+    @DubboReference
+    MaterialRpcService materialRpcService;
+    @DubboReference
+    GoodsOrderRpcService goodsOrderRpcService;
     @Autowired
     SuggestService suggestService;
 
@@ -53,8 +53,8 @@ public class HomeController {
         PageResultDTO<MemberDTO> result = memberRpcService.listMembers(page, null, null, null, null, null);
         int memberCount = (int) result.getTotal().longValue();
         int userCount = 0;
-        int materialCount = materialService.count();
-        int orderCount = goodsOrderService.count();
+        int materialCount = materialRpcService.count();
+        int orderCount = goodsOrderRpcService.count();
         TotalCount totalCount = new TotalCount(memberCount, userCount, materialCount, orderCount);
         return ResultUtils.success("查询成功", totalCount);
     }
@@ -69,12 +69,14 @@ public class HomeController {
 
     @GetMapping("/getHotGoods")
     public ResultVo getHotGoods(){
-        List<EChartItem> eChartItems = goodsOrderService.hotGoods();
+        List<EChartItemDTO> eChartItems = goodsOrderRpcService.getHotGoodsData();
         EChart eChart = new EChart();
         if(eChartItems.size() > 0){
             for(int i = 0; i < eChartItems.size(); i++){
                 eChart.getNames().add(eChartItems.get(i).getName());
-                eChart.getValues().add(eChartItems.get(i).getValue());
+                if (eChartItems.get(i).getValue() != null) {
+                    eChart.getValues().add(eChartItems.get(i).getValue());
+                }
             }
         }
         return ResultUtils.success("查询成功", eChart);
@@ -82,13 +84,13 @@ public class HomeController {
 
     @GetMapping("/getHotCards")
     public ResultVo getHotCards(){
-        List<EChartItem> eChartItems = goodsOrderService.hotCard();
+        List<EChartItemDTO> eChartItems = goodsOrderRpcService.getHotCardsData();
         return ResultUtils.success("查询成功", eChartItems);
     }
 
     @GetMapping("/getHotCourse")
     public ResultVo getHotCourse(){
-        List<EChartItem> eChartItems = goodsOrderService.hotCourse();
+        List<EChartItemDTO> eChartItems = goodsOrderRpcService.getHotCourseData();
         return ResultUtils.success("查询成功", eChartItems);
     }
 

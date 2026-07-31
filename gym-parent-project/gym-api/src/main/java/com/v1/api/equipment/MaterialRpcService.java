@@ -14,4 +14,6 @@ public interface MaterialRpcService {
     void updateMaterial(MaterialDTO material);
 
     void deleteMaterial(Long id);
+
+    int count();
 }

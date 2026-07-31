@@ -1,67 +1,46 @@
 package com.v1.web.goods.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.v1.api.dto.PageDTO;
+import com.v1.api.dto.PageResultDTO;
+import com.v1.api.dto.goods.GoodsDTO;
+import com.v1.api.goods.GoodsRpcService;
 import com.v1.utils.ResultUtils;
 import com.v1.utils.ResultVo;
-import com.v1.web.goods.entity.Goods;
-import com.v1.web.goods.entity.GoodsParam;
-import com.v1.web.goods.service.GoodsService;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/goods")
 @RestController
 public class GoodsController {
 
-    @Autowired
-    GoodsService goodsService;
+    @DubboReference
+    GoodsRpcService goodsRpcService;
 
-    /**
-     * 新增商品
-     * @param goods
-     * @return
-     */
     @PostMapping
-    public ResultVo add(@RequestBody Goods goods){
-        boolean updated = goodsService.save(goods);
-        if(updated){
-            return ResultUtils.success("添加成功");
-        }else{
-            return ResultUtils.error("添加失败");
-        }
+    public ResultVo add(@RequestBody GoodsDTO goods){
+        goodsRpcService.addGoods(goods);
+        return ResultUtils.success("添加成功");
     }
 
-    /**
-     * 修改商品
-     * @param goods
-     * @return
-     */
     @PutMapping
-    public ResultVo edit(@RequestBody Goods goods){
-        boolean updated = goodsService.updateById(goods);
-        if(updated){
-            return ResultUtils.success("编辑成功");
-        }else{
-            return ResultUtils.error("编辑失败");
-        }
+    public ResultVo edit(@RequestBody GoodsDTO goods){
+        goodsRpcService.updateGoods(goods);
+        return ResultUtils.success("编辑成功");
     }
 
     @DeleteMapping("/{goodsId}")
     public ResultVo delete(@PathVariable("goodsId") Long goodsId){
-        boolean updated = goodsService.removeById(goodsId);
-        if(updated){
-            return ResultUtils.success("删除成功");
-        }else{
-            return ResultUtils.error("删除失败");
-        }
+        goodsRpcService.deleteGoods(goodsId);
+        return ResultUtils.success("删除成功");
     }
 
     @GetMapping("/list")
-    public ResultVo list(GoodsParam goodsParam){
-        IPage<Goods> list = goodsService.list(goodsParam);
-        return ResultUtils.success("查询成功",list);
+    public ResultVo list(GoodsDTO goodsParam){
+        PageDTO page = new PageDTO();
+        page.setCurrentPage(goodsParam.getGoodsId() != null ? goodsParam.getGoodsId() : 1L);
+        page.setPageSize(10L);
+        PageResultDTO<GoodsDTO> list = goodsRpcService.listGoods(page, goodsParam.getName());
+        return ResultUtils.success("查询成功", list);
     }
 
 }
