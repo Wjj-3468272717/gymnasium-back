@@ -9,6 +9,7 @@
     <url>http://maven.apache.org</url>
     <modules>
         <module>gym-common</module>
+        <module>gym-api</module>
         <module>gym-service-web</module>
     </modules>
 
