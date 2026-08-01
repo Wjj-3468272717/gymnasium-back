@@ -1,60 +1,47 @@
 #端口号配置
 server:
   port: 9999
-#数据库连接配置
+
 spring:
-  datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/gymnasium?serverTimezone=Asia/Shanghai&characterEncoding=utf-8
-    username: root
-    password: 123456
   servlet:
     multipart:
       enabled: true
       max-file-size: 200MB
       max-request-size: 500MB
 
-#mybatis plus配置
+#mybatis plus配置（全局配置仅web模块需要）
 mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-    global-config:
-      db-config:
-      #配置mybatis plus 在更新时只更新非空和非NULL的字段
-        update-strategy: not_empty
+  global-config:
+    db-config:
+      update-strategy: not_empty
 
 # 定义日志文件的输出格式
 logging:
   pattern:
     console: '%d{yyyy-MM-dd} [%thread] %-5level %logger- %msg%n'
+
 #minio设置
 minio:
   endpoint: http://localhost:9000
   accessKey: minioadmin
   secretkey: minioadmin
+
 #jwt配置
 jwt:
-  #颁发者
   issuer: gaobie
-  #私钥
   secret: com.v1
-  #30分钟过期
   expiration: 30
 
-# Dubbo配置
+# Dubbo Consumer 配置
 dubbo:
   application:
     name: gym-service-web
-  registry:
-    address: nacos://127.0.0.1:8848
   protocol:
-    name: dubbo
     port: 20880
   consumer:
     check: false
     timeout: 10000
 
-#不需要token验证的请求，逗号分隔配置
+#不需要token验证的请求
 ignore:
   url: /api/login/login,/api/login/image
