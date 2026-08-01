@@ -50,7 +50,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
         if (StringUtils.isNotEmpty(pageParam.getUsername())) {
             queryWrapper.lambda().eq(Member::getUsername, pageParam.getUsername());
         }
-        if (pageParam.getUserType().equals("1")) {
+        if ("1".equals(pageParam.getUserType())) {
             queryWrapper.lambda().eq(Member::getMemberId, pageParam.getMemberId());
         }
         queryWrapper.lambda().orderByDesc(Member::getJoinTime);
