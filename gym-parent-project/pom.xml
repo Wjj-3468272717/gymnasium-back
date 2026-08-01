@@ -137,6 +137,12 @@
                 <artifactId>nacos-config-spring-boot-starter</artifactId>
                 <version>${nacos-config.version}</version>
             </dependency>
+            <!-- 统一 spring-context-support 版本，避免 Dubbo 与 nacos-config 冲突 -->
+            <dependency>
+                <groupId>com.alibaba.spring</groupId>
+                <artifactId>spring-context-support</artifactId>
+                <version>1.0.11</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
