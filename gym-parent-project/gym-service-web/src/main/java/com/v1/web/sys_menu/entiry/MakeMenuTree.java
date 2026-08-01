@@ -4,10 +4,35 @@ import com.v1.api.dto.sys_menu.SysMenuDTO;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class MakeMenuTree {
+
+    // 数据库path → Vue组件路径映射
+    private static final Map<String, String> COMPONENT_MAP = new HashMap<>();
+    static {
+        COMPONENT_MAP.put("/userList", "/system/user/UserList");
+        COMPONENT_MAP.put("/roleList", "/system/role/RoleList");
+        COMPONENT_MAP.put("/menuList", "/system/menu/MenuList");
+        COMPONENT_MAP.put("/memberList", "/member/list/MemberList");
+        COMPONENT_MAP.put("/cardType", "/member/type/CardType");
+        COMPONENT_MAP.put("/myFee", "/member/fee/MyFee");
+        COMPONENT_MAP.put("/courseList", "/course/CourseList");
+        COMPONENT_MAP.put("/mycourse", "/mycourse/mycourse");
+        COMPONENT_MAP.put("/courseOrder", "/course/CourseList");
+        COMPONENT_MAP.put("/goodsList", "/goods/GoodsList");
+        COMPONENT_MAP.put("/orderList", "/order/OrderList");
+        COMPONENT_MAP.put("/lostList", "/lost/LostList");
+        COMPONENT_MAP.put("/suggestList", "/suggest/SuggestList");
+        COMPONENT_MAP.put("/materialList", "/material/MaterialList");
+    }
+
+    private static String componentPath(String path) {
+        return COMPONENT_MAP.getOrDefault(path, path);
+    }
 
     public static List<SysMenuDTO> makeTree(List<SysMenuDTO> menuList, Long pid) {
         List<SysMenuDTO> list = new ArrayList<>();
@@ -44,7 +69,7 @@ public class MakeMenuTree {
                             List<RouterVO> listChild = new ArrayList<>();
                             RouterVO child = new RouterVO();
                             child.setPath(item.getPath());
-                            child.setComponent(item.getPath());
+                            child.setComponent(componentPath(item.getPath()));
                             child.setMeta(routerVO.new Meta(
                                     item.getTitle(),
                                     item.getIcon(),
@@ -56,7 +81,7 @@ public class MakeMenuTree {
                             routerVO.setName(item.getTitle() + "parent");
                         }
                     } else {
-                        routerVO.setComponent(item.getPath());
+                        routerVO.setComponent(componentPath(item.getPath()));
                     }
                     routerVO.setMeta(routerVO.new Meta(
                             item.getTitle(),

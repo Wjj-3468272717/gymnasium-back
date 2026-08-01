@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="48ee24d5-9495-4356-8f9f-8fe758ea0ca5" name="Changes" comment="修复 密码加密不一致和前后端路径不匹配的问题">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="48ee24d5-9495-4356-8f9f-8fe758ea0ca5" name="Changes" comment="修复 密码加密不一致和前后端路径不匹配的问题" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -90,7 +88,7 @@
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/Project/gymnasium/gymnasium-back/gym-parent-project",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Libraries",
+    "project.structure.last.edited": "Facets",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
     "run.configurations.included.in.services": "true",
@@ -111,6 +109,17 @@
       <set>
         <option value="HttpClient.HttpRequestRunConfigurationType" />
       </set>
+    </option>
+    <option name="configurationStatuses">
+      <map>
+        <entry key="SpringBootApplicationConfigurationType">
+          <value>
+            <map>
+              <entry key="GymServiceCourseApplication" value="FAILED" />
+            </map>
+          </value>
+        </entry>
+      </map>
     </option>
   </component>
   <component name="RunManager" selected="Spring Boot.GymServiceCourseApplication">
@@ -200,7 +209,7 @@
       <workItem from="1785334864255" duration="20418000" />
       <workItem from="1785486321180" duration="1130000" />
       <workItem from="1785505846706" duration="2228000" />
-      <workItem from="1785513394617" duration="15747000" />
+      <workItem from="1785513394617" duration="22995000" />
     </task>
     <task id="LOCAL-00001" summary="初始化项目结构">
       <option name="closed" value="true" />
