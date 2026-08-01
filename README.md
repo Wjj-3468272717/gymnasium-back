@@ -2,7 +2,7 @@
 
 基于 Spring Boot + Dubbo 分布式架构的健身房管理系统后端，提供会员管理、课程管理、商品订单、器材管理、权限控制等核心功能。
 
-<img src="README.assets/image-20260802005418380.png" alt="帕梅拉酷我健身" style="zoom:150%;" />
+<img src="README.assets/988dea87-7ef1-4ed7-a91d-ef26cd674fd6.png" alt="988dea87-7ef1-4ed7-a91d-ef26cd674fd6" style="zoom:25%;" />
 
 ---
 
@@ -363,7 +363,7 @@ Spring Security + JWT 无状态认证 + BCrypt 密码加密 + 验证码登录 + 
 
 ## 🙏 特别鸣谢
 
-本项目的诞生离不开开源软件和社区的支持，感谢以下开源项目及维护者 (´▽`ʃ♡ƪ)：
+本项目的诞生离不开开源软件和社区的支持，感谢以下开源项目及维护者 
 
 - [Spring](https://github.com/spring-projects) — 企业级 Java 应用框架
 - [Apache Dubbo](https://github.com/apache/dubbo) — 高性能 RPC 框架
@@ -375,11 +375,17 @@ Spring Security + JWT 无状态认证 + BCrypt 密码加密 + 验证码登录 + 
 - [MinIO](https://github.com/minio) — 高性能对象存储
 - [Druid](https://github.com/alibaba/druid) — 数据库连接池
 
-特别感谢 **JetBrains** 提供的教育许可证，让本项目的开发效率大幅提升！
+特别感谢 **JetBrains** 提供的教育许可证，大幅提升开发效率！
 
 > <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg" width="120" />
 
 同时也感谢其他未明确列出的开源组件的贡献与维护者。
+
+感谢ClaudeCode，Deepseek提供技术支持
+
+<img src="README.assets/0e48092990563227cc8cb87163fc937ce7e39e46f7c69c4..webp" alt="0e48092990563227cc8cb87163fc937ce7e39e46f7c69c4." style="zoom: 25%;" />
+
+<img src="README.assets/d9ada70afbca6bbf659f0b08f494a43fd90786dba1bd601..webp" alt="d9ada70afbca6bbf659f0b08f494a43fd90786dba1bd601." style="zoom: 25%;" />
 
 ---
 
@@ -388,7 +394,7 @@ Spring Security + JWT 无状态认证 + BCrypt 密码加密 + 验证码登录 + 
 启动后访问：`http://localhost:9999/swagger-ui.html`
 
 > Swagger URL 已在 `ignore.url` 白名单中，无需 Token 即可访问。
+>
+> 也可导入到apifox
 
----
-
-> Made with 💪 by 帕梅拉酷我健身开发团队 | 2024 — 2026
+![image-20260802010128164](README.assets/image-20260802010128164.png)
