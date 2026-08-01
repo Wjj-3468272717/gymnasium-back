@@ -40,8 +40,10 @@ public class CheckTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try { //获取请求的url
             String url = request.getRequestURI();
-            //判断是否放行
-            if (!ignoreUrl.contains(url) && !url.startsWith("/images/")) {
+            //判断是否放行（prefix 项支持前缀匹配）
+            boolean isIgnore = ignoreUrl.stream().anyMatch(prefix ->
+                url.equals(prefix) || (!prefix.endsWith("/") && url.startsWith(prefix + "/")) || url.startsWith(prefix));
+            if (!isIgnore && !url.startsWith("/images/")) {
                 validateToken(request);
             }
         } catch (AuthenticationException e) {
