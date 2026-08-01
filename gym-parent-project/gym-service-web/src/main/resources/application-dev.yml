@@ -42,4 +42,4 @@ dubbo:
 
 #不需要token验证的请求
 ignore:
-  url: /api/login/login,/api/login/image,/swagger-ui.html,/swagger-resources,/webjars,/v2/api-docs
+  url: /api/login/login,/api/login/image,/swagger-ui.html,/swagger-resources/**,/webjars/**,/v2/api-docs/**
