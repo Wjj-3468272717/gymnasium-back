@@ -53,21 +53,8 @@ dubbo:
     port: 20880
   consumer:
     check: false
-    timeout: 3000
+    timeout: 10000
 
 #不需要token验证的请求，逗号分隔配置
 ignore:
   url: /api/login/login,/api/login/image
-
-# Dubbo 配置（Phase 2 启用，当前注释）
-# dubbo:
-#   application:
-#     name: gym-service-web
-#   registry:
-#     address: nacos://127.0.0.1:8848
-#   protocol:
-#     name: dubbo
-#     port: 20880
-#   consumer:
-#     check: false
-#     timeout: 3000

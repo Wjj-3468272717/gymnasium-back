@@ -27,6 +27,7 @@ dubbo:
   protocol:
     name: dubbo
     port: 20885
+    host: 127.0.0.1
   scan:
     base-packages: com.v1.service.home.provider
 
