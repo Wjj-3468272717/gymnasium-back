@@ -4,6 +4,8 @@
 
 ---
 
+<img src="README.assets/image-20260802005418380.png" alt="image-20260802005418380" style="zoom:150%;" />
+
 ## 项目介绍
 
 本项目从 Spring Boot 单体架构演进为 **Dubbo + Nacos 微服务分布式架构**，实现了服务拆分、远程调用、配置中心统一管理。系统面向健身房日常运营场景，支持管理员（员工）、教练、会员三种角色，涵盖用户认证、权限管理、会员办卡充值、课程报名、商品下单、器材管理、失物招领、意见反馈等完整业务流程。
@@ -187,7 +189,10 @@ minio.accessKey=minioadmin
 minio.secretKey=minioadmin
 ```
 
+![image-20260802005833361](README.assets/image-20260802005833361.png)
+
 ### 4. 全量打包
+
 ```bash
 cd gym-parent-project
 mvn clean install -DskipTests
@@ -312,3 +317,7 @@ java -jar gym-service-web/target/gym-service-web-1.0-SNAPSHOT.jar
 启动后访问：`http://localhost:9999/swagger-ui.html`
 
 > Swagger URL 已在 `ignore.url` 白名单中，无需 Token 即可访问。
+>
+> 也可以导入到apifox，如图
+
+![image-20260802010128164](README.assets/image-20260802010128164.png)
