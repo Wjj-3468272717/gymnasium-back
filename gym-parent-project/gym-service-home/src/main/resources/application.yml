@@ -21,7 +21,3 @@ dubbo:
   scan:
     base-packages: com.v1.service.home.provider
 
-minio:
-  endpoint: http://localhost:9000
-  accessKey: minioadmin
-  secretKey: minioadmin

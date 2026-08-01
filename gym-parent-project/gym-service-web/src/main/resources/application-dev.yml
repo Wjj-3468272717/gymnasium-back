@@ -20,11 +20,6 @@ logging:
   pattern:
     console: '%d{yyyy-MM-dd} [%thread] %-5level %logger- %msg%n'
 
-#minio设置
-minio:
-  endpoint: http://localhost:9000
-  accessKey: minioadmin
-  secretkey: minioadmin
 
 #jwt配置
 jwt:
