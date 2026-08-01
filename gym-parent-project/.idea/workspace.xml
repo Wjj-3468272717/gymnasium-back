@@ -122,7 +122,7 @@
       </map>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.GymServiceCourseApplication">
+  <component name="RunManager" selected="Spring Boot.GYMServiceWebApplication">
     <configuration name="generated-requests | #2" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" executionIdentifier="#2" index="2" runType="Run single request">
       <method v="2" />
     </configuration>
@@ -209,7 +209,7 @@
       <workItem from="1785334864255" duration="20418000" />
       <workItem from="1785486321180" duration="1130000" />
       <workItem from="1785505846706" duration="2228000" />
-      <workItem from="1785513394617" duration="25790000" />
+      <workItem from="1785513394617" duration="31163000" />
     </task>
     <task id="LOCAL-00001" summary="初始化项目结构">
       <option name="closed" value="true" />
