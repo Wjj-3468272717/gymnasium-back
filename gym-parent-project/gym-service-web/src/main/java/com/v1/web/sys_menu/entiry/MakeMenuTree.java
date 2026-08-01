@@ -65,18 +65,17 @@ public class MakeMenuTree {
                         //判断是否为菜单类型
                         if ("1".equals(item.getType())) {
                             routerVO.setRedirect(item.getPath());
-                            //菜单也需要设置children
-                            List<RouterVO> listChild = new ArrayList<>();
-                            RouterVO child = new RouterVO();
-                            child.setPath(item.getPath());
-                            child.setComponent(componentPath(item.getPath()));
-                            child.setMeta(routerVO.new Meta(
+                            //重定向节点加到真实children前面，不覆盖真实子路由
+                            RouterVO redirectChild = new RouterVO();
+                            redirectChild.setPath(item.getPath());
+                            redirectChild.setComponent(componentPath(item.getPath()));
+                            redirectChild.setMeta(routerVO.new Meta(
                                     item.getTitle(),
                                     item.getIcon(),
                                     item.getCode() != null ? item.getCode().split(",") : new String[0]
                             ));
-                            listChild.add(child);
-                            routerVO.setChildren(listChild);
+                            children.add(0, redirectChild);
+                            routerVO.setChildren(children);
                             routerVO.setPath(item.getPath());
                             routerVO.setName(item.getTitle() + "parent");
                         }
