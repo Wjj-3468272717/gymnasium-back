@@ -115,4 +115,9 @@ public class SysUserRpcProvider implements SysUserRpcService {
             return dto;
         }).collect(Collectors.toList());
     }
+
+    @Override
+    public int count() {
+        return (int) sysUserService.count();
+    }
 }

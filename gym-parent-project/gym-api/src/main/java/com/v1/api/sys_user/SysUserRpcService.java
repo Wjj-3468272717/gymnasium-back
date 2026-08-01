@@ -22,4 +22,6 @@ public interface SysUserRpcService {
     Boolean deleteUser(Long userId);
 
     List<SysUserDTO> getTeachers();
+
+    int count();
 }

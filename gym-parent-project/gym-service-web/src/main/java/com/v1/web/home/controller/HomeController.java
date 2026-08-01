@@ -51,7 +51,7 @@ public class HomeController {
         page.setPageSize(1L);
         PageResultDTO<MemberDTO> result = memberRpcService.listMembers(page, null, null, null, null, null);
         int memberCount = (int) result.getTotal().longValue();
-        int userCount = 0;
+        int userCount = userRpcService.count();
         int materialCount = materialRpcService.count();
         int orderCount = goodsOrderRpcService.count();
         TotalCount totalCount = new TotalCount(memberCount, userCount, materialCount, orderCount);

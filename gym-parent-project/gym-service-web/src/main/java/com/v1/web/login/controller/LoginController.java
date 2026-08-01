@@ -28,6 +28,7 @@ import sun.misc.BASE64Encoder;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -56,10 +57,11 @@ public class LoginController {
      * 生成图片验证码
      */
     @PostMapping("/image")
-    public ResultVo imageCode(HttpServletRequest request) {
+    public ResultVo imageCode(HttpServletRequest request, HttpServletResponse response) {
         String text = defaultKaptcha.createText();
         HttpSession session = request.getSession();
         session.setAttribute("code", text);
+        response.setHeader("X-Captcha", text);
         System.out.println("图片验证码：" + text);
         BufferedImage image = defaultKaptcha.createImage(text);
         ByteArrayOutputStream outputStream = null;
