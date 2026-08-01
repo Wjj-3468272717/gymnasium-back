@@ -1,4 +1,4 @@
-# 🏋️ 帕梅拉酷我健身-在线管理系统
+# 🏋️ 帕梅拉酷我健身在线系统
 
 基于 Spring Boot + Dubbo 分布式架构的健身房管理系统后端，提供会员管理、课程管理、商品订单、器材管理、权限控制等核心功能。
 
@@ -191,17 +191,28 @@ gym-parent-project
 - MinIO（图片存储，可选）
 - Nacos 1.4.2
 
-### 1. 初始化数据库
+### 1. 初始化 MySQL 和 MinIO
 
 ```bash
 mysql -u root -p < scripts/gym.sql
 ```
 
+```bash
+minio.RELEASE.2025-04-22T22-12-26Z server D:\minio\data --console-address ":9001" --address ":9000"
+```
+
 ### 2. 启动 Nacos
 
 ```bash
-cd D:\softs\Nacos\nacos1.4.2\nacos
+cd D:\softs\Nacos\nacos1.4.2\nacos#你的nacos安装路径
 startup.cmd -m standalone
+```
+
+或者
+
+```bash
+cd D:\softs\Nacos\nacos1.4.2\nacos #你的nacos安装路径
+java -Dnacos.standalone=true -jar target/nacos-server.jar --server.port=8848
 ```
 
 ### 3. 上传 Nacos 配置（仅首次）
