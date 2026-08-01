@@ -173,12 +173,12 @@ public class LoginController {
             userInfo.setName(member.getName());
             return ResultUtils.success("查询成功", userInfo);
         } else {
-            if (param.getUserType().equals("2")) {
+            if ("2".equals(param.getUserType())) {
                 SysUserDTO user = sysUserRpcService.getUserById(param.getUserId());
                 List<SysMenuDTO> menus = null;
-                if (StringUtils.isNotEmpty(user.getIsAdmin()) && user.getIsAdmin().equals("1")) {
+                if (user != null && StringUtils.isNotEmpty(user.getIsAdmin()) && "1".equals(user.getIsAdmin())) {
                     menus = menuRpcService.getAllMenus();
-                } else {
+                } else if (user != null) {
                     menus = menuRpcService.getMenuByUserId(user.getUserId());
                 }
                 List<String> collect = Optional
@@ -189,8 +189,8 @@ public class LoginController {
                         .map(item -> item.getCode())
                         .collect(Collectors.toList());
                 String[] strings = collect.toArray(new String[collect.size()]);
-                userInfo.setUserId(user.getUserId());
-                userInfo.setName(user.getNickName());
+                userInfo.setUserId(user != null ? user.getUserId() : null);
+                userInfo.setName(user != null ? user.getNickName() : null);
                 userInfo.setPermissions(strings);
                 return ResultUtils.success("查询成功", userInfo);
             } else {
@@ -202,7 +202,7 @@ public class LoginController {
     //获取菜单信息
     @GetMapping("/getMenuList")
     public ResultVo getMenuList(InfoParam param) {
-        if (param.getUserType().equals("1")) {
+        if ("1".equals(param.getUserType())) {
             List<SysMenuDTO> menus = menuRpcService.getMenuByMemberId(param.getUserId());
             List<SysMenuDTO> collect = Optional
                     .ofNullable(menus)
@@ -213,12 +213,12 @@ public class LoginController {
             List<RouterVO> router = MakeMenuTree.makeRouter(collect, 0L);
             return ResultUtils.success("查询成功", router);
         } else {
-            if (param.getUserType().equals("2")) {
+            if ("2".equals(param.getUserType())) {
                 SysUserDTO user = sysUserRpcService.getUserById(param.getUserId());
                 List<SysMenuDTO> menus = null;
-                if (StringUtils.isNotEmpty(user.getIsAdmin()) && user.getIsAdmin().equals("1")) {
+                if (user != null && StringUtils.isNotEmpty(user.getIsAdmin()) && "1".equals(user.getIsAdmin())) {
                     menus = menuRpcService.getAllMenus();
-                } else {
+                } else if (user != null) {
                     menus = menuRpcService.getMenuByUserId(user.getUserId());
                 }
                 List<SysMenuDTO> collect = Optional

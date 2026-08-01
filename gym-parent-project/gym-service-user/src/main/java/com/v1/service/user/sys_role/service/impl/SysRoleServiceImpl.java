@@ -50,7 +50,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
     public RolePermissionVo getMenuTree(RoleAssignParam param) {
         SysUser user = userService.getById(param.getUserId());
         List<SysMenu> list = null;
-        if(StringUtils.isNotEmpty(user.getIsAdmin()) && user.getIsAdmin().equals("1")){//超级管理员
+        if(user != null && StringUtils.isNotEmpty(user.getIsAdmin()) && "1".equals(user.getIsAdmin())){//超级管理员
             list = menuService.list();
         }else{
             list = menuService.getMenuByUserId(param.getUserId());

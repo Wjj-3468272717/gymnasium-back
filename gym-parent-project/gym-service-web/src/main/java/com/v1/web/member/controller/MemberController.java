@@ -145,14 +145,14 @@ public class MemberController {
     @GetMapping("getMyRecharge")
     public ResultVo getMyRecharge(RechargeParamList paramList){
         //判断当前用户是会员还是员工
-        if(paramList.getUserType().equals("1")){//会员
+        if("1".equals(paramList.getUserType())){//会员
             PageDTO page = new PageDTO();
             page.setCurrentPage(paramList.getCurrentPage());
             page.setPageSize(paramList.getPageSize());
             PageResultDTO<MemberRechargeDTO> rechargeIPage = memberRechargeRpcService.getRechargeByMember(page, paramList.getMemberId());
             return ResultUtils.success("查询成功", rechargeIPage);
         }else{
-            if(paramList.getUserType().equals("2")){//员工
+            if("2".equals(paramList.getUserType())){//员工
                 PageDTO page = new PageDTO();
                 page.setCurrentPage(paramList.getCurrentPage());
                 page.setPageSize(paramList.getPageSize());

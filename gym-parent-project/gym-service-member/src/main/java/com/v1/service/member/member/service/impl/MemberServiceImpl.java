@@ -119,6 +119,12 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
     public void joinApply(JoinParam param) throws ParseException {
         Member select = this.baseMapper.selectById(param.getMemberId());
         MemberCard card = memberCardMapper.selectById(param.getCardId());
+        if (select == null) {
+            throw new RuntimeException("会员不存在");
+        }
+        if (card == null) {
+            throw new RuntimeException("会员卡不存在");
+        }
         //更新用户信息
         Member member = new Member();
         member.setMemberId(param.getMemberId());

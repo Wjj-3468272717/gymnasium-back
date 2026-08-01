@@ -100,12 +100,12 @@ public class HomeController {
     //重置密码
     @PostMapping("/resetPassword")
     public ResultVo resetPassword(@RequestBody ResetPassword resetPassword){
-        if(resetPassword.getUserType().equals("1")){//会员
+        if("1".equals(resetPassword.getUserType())){//会员
             String password = passwordEncoder.encode("123456");
             memberRpcService.resetPassword(resetPassword.getUserId(), password);
             return ResultUtils.success("密码修改成功");
         }else{
-            if(resetPassword.getUserType().equals("2")){//员工
+            if("2".equals(resetPassword.getUserType())){//员工
                 String password = passwordEncoder.encode("123456");
                 userRpcService.resetPassword(resetPassword.getUserId(), password);
                 return ResultUtils.success("密码修改成功");
@@ -118,7 +118,7 @@ public class HomeController {
     //修改密码
     @PostMapping("/updatePassword")
     public ResultVo updatePassword(@RequestBody ResetPassword resetPassword){
-        if(resetPassword.getUserType().equals("1")){//会员
+        if("1".equals(resetPassword.getUserType())){//会员
             MemberDTO member = memberRpcService.getMemberById(resetPassword.getUserId());
             if(member == null || !passwordEncoder.matches(resetPassword.getOldPassword(), member.getPassword())){
                 return ResultUtils.error("原密码错误！");
@@ -127,7 +127,7 @@ public class HomeController {
             memberRpcService.resetPassword(resetPassword.getUserId(), password);
             return ResultUtils.success("密码修改成功");
         }else{
-            if(resetPassword.getUserType().equals("2")){//员工
+            if("2".equals(resetPassword.getUserType())){//员工
                 SysUserDTO user = userRpcService.getUserById(resetPassword.getUserId());
                 if(user == null || !passwordEncoder.matches(resetPassword.getOldPassword(), user.getPassword())){
                     return ResultUtils.error("原密码错误！");

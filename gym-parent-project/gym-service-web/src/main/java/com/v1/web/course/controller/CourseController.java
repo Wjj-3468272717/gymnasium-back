@@ -79,7 +79,16 @@ public class CourseController {
         }
         //判断余额
         CourseDTO course = courseRpcService.getCourseById(memberCourse.getCourseId());
+        if (course == null) {
+            return ResultUtils.error("课程不存在");
+        }
         MemberDTO member = memberRpcService.getMemberById(memberCourse.getMemberId());
+        if (member == null) {
+            return ResultUtils.error("会员不存在");
+        }
+        if (member.getMoney() == null || course.getCoursePrice() == null) {
+            return ResultUtils.error("余额或课程价格异常");
+        }
         int compared = member.getMoney().compareTo(course.getCoursePrice());
         if(compared == -1){
             return ResultUtils.error("您的余额不足，请先充值");
@@ -95,7 +104,7 @@ public class CourseController {
         PageDTO page = new PageDTO();
         page.setCurrentPage(param.getCurrentPage());
         page.setPageSize(param.getPageSize());
-        if(param.getUserType().equals("1")){//会员
+        if("1".equals(param.getUserType())){//会员
             PageResultDTO<MemberCourseDTO> list = memberCourseRpcService.getMyCourseList(page, param.getUserId());
             return ResultUtils.success("查询成功", list);
         }else{//老师

@@ -38,12 +38,18 @@ public class GoodsOrderServiceImpl extends ServiceImpl<GoodsOrderMapper, GoodsOr
     @Override
     public boolean downOrder(OrderParam param) {
         SysUserDTO user = sysUserRpcService.getUserById(param.getUserId());
+        if (user == null) {
+            throw new RuntimeException("用户不存在");
+        }
         List<OrderItem> list = param.getOrderItemList();
         List<GoodsOrder> orderList = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
             Long goodsId = list.get(i).getGoodsId();
             Integer num = list.get(i).getNum();
             Goods goods = goodsService.getById(goodsId);
+            if (goods == null) {
+                throw new RuntimeException("商品不存在: " + goodsId);
+            }
             GoodsOrder goodsOrder = new GoodsOrder();
 
             BeanUtils.copyProperties(goods, goodsOrder);

@@ -34,6 +34,9 @@ public class MemberCourseServiceImpl extends ServiceImpl<MemberCourseMapper, Mem
         int inserted = this.baseMapper.insert(memberCourse);
         if(inserted > 0){//报名成功，扣除金额
             MemberDTO member = memberRpcService.getMemberById(memberCourse.getMemberId());
+            if (member == null || member.getMoney() == null || course.getCoursePrice() == null) {
+                throw new RuntimeException("会员或课程价格异常，无法扣款");
+            }
             member.setMoney(member.getMoney().subtract(course.getCoursePrice()));
             memberRpcService.editMember(member);
         }

@@ -11,7 +11,6 @@ import com.v1.service.user.sys_user.service.SysUserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
-import javax.management.Query;
 
 @Service
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper,SysUser> implements SysUserService{
@@ -19,7 +18,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper,SysUser> imple
     public IPage<SysUser> list(PageParam pageParam) {
         IPage<SysUser> ipage = new Page<>();
         ipage.setSize(pageParam.getPageSize());
-        ipage.setPages(pageParam.getCurrentPage());
+        ipage.setCurrent(pageParam.getCurrentPage());
 
         QueryWrapper<SysUser> q = new QueryWrapper<>();
         if(StringUtils.isNotEmpty(pageParam.getNickName())){
