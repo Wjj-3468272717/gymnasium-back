@@ -1,5 +1,6 @@
 package com.v1;
 
+import com.alibaba.nacos.spring.context.annotation.config.NacosPropertySource;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
@@ -12,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 @EnableDubbo
 @MapperScan("com.v1.service.member.**.mapper")
+@NacosPropertySource(dataId = "gym-service-member.yaml", autoRefreshed = true)
 public class GymServiceMemberApplication {
     public static void main(String[] args) {
         SpringApplication.run(GymServiceMemberApplication.class, args);

@@ -1,31 +1,7 @@
-nacos:
-  config:
-    server-addr: 127.0.0.1:8848
-    type: yaml
-    shared-configs:
-      - dataId: gym-datasource.yaml
-        group: DEFAULT_GROUP
-      - dataId: gym-mybatis-plus.yaml
-        group: DEFAULT_GROUP
-      - dataId: gym-dubbo-common.yaml
-        group: DEFAULT_GROUP
-
 spring:
   application:
     name: gym-service-home
 
-server:
-  port: 8085
-
-dubbo:
-  application:
-    name: gym-service-home
-  protocol:
-    port: 20885
-  scan:
-    base-packages: com.v1.service.home.provider
-
-minio:
-  endpoint: http://localhost:9000
-  accessKey: minioadmin
-  secretKey: minioadmin
+nacos:
+  config:
+    server-addr: 127.0.0.1:8848

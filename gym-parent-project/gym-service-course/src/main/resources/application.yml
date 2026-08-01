@@ -1,26 +1,7 @@
-nacos:
-  config:
-    server-addr: 127.0.0.1:8848
-    type: yaml
-    shared-configs:
-      - dataId: gym-datasource.yaml
-        group: DEFAULT_GROUP
-      - dataId: gym-mybatis-plus.yaml
-        group: DEFAULT_GROUP
-      - dataId: gym-dubbo-common.yaml
-        group: DEFAULT_GROUP
-
 spring:
   application:
     name: gym-service-course
 
-server:
-  port: 8083
-
-dubbo:
-  application:
-    name: gym-service-course
-  protocol:
-    port: 20883
-  scan:
-    base-packages: com.v1.service.course.provider
+nacos:
+  config:
+    server-addr: 127.0.0.1:8848

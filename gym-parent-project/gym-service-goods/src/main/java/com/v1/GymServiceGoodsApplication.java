@@ -1,5 +1,6 @@
 package com.v1;
 
+import com.alibaba.nacos.spring.context.annotation.config.NacosPropertySource;
 import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -8,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @EnableDubbo
 @MapperScan("com.v1.service.goods.**.mapper")
+@NacosPropertySource(dataId = "gym-service-goods.yaml", autoRefreshed = true)
 public class GymServiceGoodsApplication {
     public static void main(String[] args) {
         SpringApplication.run(GymServiceGoodsApplication.class, args);
