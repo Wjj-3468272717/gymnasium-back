@@ -1,7 +1,22 @@
+nacos:
+  config:
+    server-addr: 127.0.0.1:8848
+
 spring:
   application:
     name: gym-service-user
 
-nacos:
-  config:
-    server-addr: 127.0.0.1:8848
+server:
+  port: 8081
+
+dubbo:
+  application:
+    name: gym-service-user
+  registry:
+    address: nacos://127.0.0.1:8848
+  protocol:
+    name: dubbo
+    host: 127.0.0.1
+    port: 20881
+  scan:
+    base-packages: com.v1.service.user.provider

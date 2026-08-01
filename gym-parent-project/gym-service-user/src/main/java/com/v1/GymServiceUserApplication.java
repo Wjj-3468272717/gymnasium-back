@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 @EnableDubbo
 @MapperScan("com.v1.service.user.**.mapper")
-@NacosPropertySource(dataId = "gym-service-user.yaml", autoRefreshed = true)
+@NacosPropertySource(dataId = "gym-common.yaml", autoRefreshed = true)
 public class GymServiceUserApplication {
     public static void main(String[] args) {
         SpringApplication.run(GymServiceUserApplication.class, args);
