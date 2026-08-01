@@ -1,12 +1,15 @@
 package com.v1.web.suggest.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.v1.api.dto.PageDTO;
+import com.v1.api.dto.PageResultDTO;
+import com.v1.api.dto.suggest.SuggestDTO;
+import com.v1.api.suggest.SuggestRpcService;
+import com.v1.service.home.suggest.entity.Suggest;
+import com.v1.service.home.suggest.entity.SuggestParam;
 import com.v1.utils.ResultUtils;
 import com.v1.utils.ResultVo;
-import com.v1.web.suggest.entity.Suggest;
-import com.v1.web.suggest.entity.SuggestParam;
-import com.v1.web.suggest.service.SuggestService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.dubbo.config.annotation.DubboReference;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -15,8 +18,8 @@ import java.util.Date;
 @RequestMapping("/api/suggest")
 public class SuggestController {
 
-    @Autowired
-    SuggestService suggestService;
+    @DubboReference
+    SuggestRpcService suggestRpcService;
 
     /**
      * 新增反馈
@@ -26,12 +29,10 @@ public class SuggestController {
     @PostMapping
     public ResultVo add(@RequestBody Suggest suggest){
         suggest.setDateTime(new Date());
-        boolean updated = suggestService.save(suggest);
-        if(updated){
-            return ResultUtils.success("反馈成功");
-        }else{
-            return ResultUtils.error("反馈失败");
-        }
+        SuggestDTO dto = new SuggestDTO();
+        BeanUtils.copyProperties(suggest, dto);
+        suggestRpcService.add(dto);
+        return ResultUtils.success("反馈成功");
     }
 
     /**
@@ -41,12 +42,10 @@ public class SuggestController {
      */
     @PutMapping
     public ResultVo edit(@RequestBody Suggest suggest){
-        boolean updated = suggestService.updateById(suggest);
-        if(updated){
-            return ResultUtils.success("修改成功");
-        }else{
-            return ResultUtils.error("修改失败");
-        }
+        SuggestDTO dto = new SuggestDTO();
+        BeanUtils.copyProperties(suggest, dto);
+        suggestRpcService.update(dto);
+        return ResultUtils.success("修改成功");
     }
 
     /**
@@ -56,18 +55,17 @@ public class SuggestController {
      */
     @DeleteMapping("/{id}")
     public ResultVo delete(@PathVariable("id") Long id){
-        boolean updated = suggestService.removeById(id);
-        if(updated){
-            return ResultUtils.success("删除成功");
-        }else{
-            return ResultUtils.error("删除失败");
-        }
+        suggestRpcService.delete(id);
+        return ResultUtils.success("删除成功");
     }
 
     @GetMapping("/list")
     public ResultVo list(SuggestParam suggestParam){
-        IPage<Suggest> list = suggestService.list(suggestParam);
-        return ResultUtils.success("查询成功",list);
+        PageDTO page = new PageDTO();
+        page.setCurrentPage(suggestParam.getCurrentPage());
+        page.setPageSize(suggestParam.getPageSize());
+        PageResultDTO<SuggestDTO> result = suggestRpcService.list(page, suggestParam.getTitle());
+        return ResultUtils.success("查询成功", result);
     }
 
 }

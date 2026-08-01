@@ -14,6 +14,7 @@
         <module>gym-service-member</module>
         <module>gym-service-course</module>
         <module>gym-service-goods</module>
+        <module>gym-service-home</module>
         <module>gym-service-web</module>
     </modules>
 

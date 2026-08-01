@@ -9,5 +9,7 @@ public interface SuggestRpcService {
 
     void add(SuggestDTO suggest);
 
+    void update(SuggestDTO suggest);
+
     void delete(Long id);
 }

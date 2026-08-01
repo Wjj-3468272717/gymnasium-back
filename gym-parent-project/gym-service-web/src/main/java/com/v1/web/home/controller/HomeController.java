@@ -1,22 +1,21 @@
 package com.v1.web.home.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.v1.api.dto.PageDTO;
 import com.v1.api.dto.PageResultDTO;
 import com.v1.api.dto.home.EChartItemDTO;
 import com.v1.api.dto.member.MemberDTO;
+import com.v1.api.dto.suggest.SuggestDTO;
 import com.v1.api.dto.sys_user.SysUserDTO;
 import com.v1.api.equipment.MaterialRpcService;
 import com.v1.api.goods_order.GoodsOrderRpcService;
 import com.v1.api.member.MemberRpcService;
+import com.v1.api.suggest.SuggestRpcService;
 import com.v1.api.sys_user.SysUserRpcService;
+import com.v1.service.home.home.entity.EChart;
+import com.v1.service.home.home.entity.ResetPassword;
+import com.v1.service.home.home.entity.TotalCount;
 import com.v1.utils.ResultUtils;
 import com.v1.utils.ResultVo;
-import com.v1.web.home.entity.EChart;
-import com.v1.web.home.entity.ResetPassword;
-import com.v1.web.home.entity.TotalCount;
-import com.v1.web.suggest.entity.Suggest;
-import com.v1.web.suggest.service.SuggestService;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -41,8 +40,8 @@ public class HomeController {
     MaterialRpcService materialRpcService;
     @DubboReference
     GoodsOrderRpcService goodsOrderRpcService;
-    @Autowired
-    SuggestService suggestService;
+    @DubboReference
+    SuggestRpcService suggestRpcService;
 
     //统计总数
     @GetMapping("/getTotal")
@@ -61,10 +60,11 @@ public class HomeController {
 
     @GetMapping("/getSuggestList")
     public ResultVo getSuggestList(){
-        QueryWrapper<Suggest> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().orderByDesc(Suggest::getDateTime).last("limit 3");
-        List<Suggest> suggestList = suggestService.list(queryWrapper);
-        return ResultUtils.success("查询成功", suggestList);
+        PageDTO page = new PageDTO();
+        page.setCurrentPage(1L);
+        page.setPageSize(3L);
+        PageResultDTO<SuggestDTO> result = suggestRpcService.list(page, null);
+        return ResultUtils.success("查询成功", result.getRecords());
     }
 
     @GetMapping("/getHotGoods")
