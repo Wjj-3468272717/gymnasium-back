@@ -1,0 +1,11 @@
+# 注意：
+# 1. 不能排除 target/，Dockerfile 需要 COPY 里面预编译的 jar
+# 2. 不能排除 Dockerfile / Dockerfile.nacos-init（Docker 需从上下文读取它们）
+.git
+.gitignore
+.idea
+.claude
+.mvn
+docs
+*.iml
+docker-compose.yml

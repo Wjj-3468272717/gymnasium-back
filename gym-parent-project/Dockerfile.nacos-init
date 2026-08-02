@@ -1,0 +1,6 @@
+# 一次性容器：等待 Nacos 就绪后上传 gym-common.properties 配置
+FROM alpine:3.18
+RUN apk add --no-cache curl
+COPY scripts/nacos-init.sh /init.sh
+RUN chmod +x /init.sh
+ENTRYPOINT ["/init.sh"]
