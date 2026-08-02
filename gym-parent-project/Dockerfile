@@ -1,5 +1,6 @@
 # 通用服务运行时镜像：构建时通过 ARG JAR_FILE 指定各服务的 jar 路径
-FROM openjdk:8-jre-slim
+# 基础镜像用 eclipse-temurin:8-jre（官方 openjdk:8 镜像已废弃，部分镜像源返回 403）
+FROM eclipse-temurin:8-jre
 
 ARG JAR_FILE
 ENV TZ=Asia/Shanghai
